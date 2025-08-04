@@ -1,11 +1,10 @@
-import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "../Components/auth/Login";
 import Dashboard from "./Dashboard Pages/dashboard/Dashboard";
 import Protected from "../Components/Common/Protected";
 import AddUser from "../Pages/Dashboard Pages/Add User/AddUser";
 import AllUsers from "./Dashboard Pages/all users/AllUsers";
-import AllCountries from "./Dashboard Pages/all_countries/AllCountries";
+import AllStores from "./Dashboard Pages/all_stores/AllStores";
 import Services from "./Dashboard Pages/services/Services";
 import AddService from "./Dashboard Pages/services/AddService";
 import Messages from "./Dashboard Pages/messages/Messages";
@@ -73,7 +72,7 @@ const pages = () => {
             path="/admin/all-stores"
             element={
               <ProtectedRoute>
-                <AllCountries />
+                <AllStores />
               </ProtectedRoute>
             }
           />

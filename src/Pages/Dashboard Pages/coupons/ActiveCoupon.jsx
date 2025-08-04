@@ -10,12 +10,7 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
 const ActiveCoupon = () => {
-  const {
-    data: bookings,
-    isLoading,
-    error,
-    refetch,
-  } = useGetBookingsQuery();
+  const { data: bookings, isLoading, error, refetch } = useGetBookingsQuery();
   const [deleteBooking] = useDeleteBookingMutation();
   const navigate = useNavigate();
   useEffect(() => {
@@ -93,7 +88,7 @@ const ActiveCoupon = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {bookings.bookings.map((booking, index) => (
+                          {bookings?.map((booking, index) => (
                             <tr key={booking.id}>
                               <td>{index + 1} </td>{" "}
                               {/* Tracking ID as the user ID */}

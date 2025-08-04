@@ -5,7 +5,7 @@ import PageHeader from "../../../Components/Common/page header/PageHeader";
 import {
   useDeleteBookingMutation,
   useGetBookingsQuery,
-} from "../../../api/bookingSlice";
+} from "../../../api/coupons";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
@@ -87,14 +87,13 @@ const Bookings = () => {
                             <th># </th>
                             <th> اسم المسوق </th>
                             <th>الكوبون</th>
-                            {/* <th>حالة الدفع</th> */}
                             <th>الحالة</th>
                             <th>تاريخ النشاء</th>
                             <th> اجراء </th>
                           </tr>
                         </thead>
                         <tbody>
-                          {bookings.bookings.map((booking, index) => (
+                          {bookings?.map((booking, index) => (
                             <tr key={booking.id}>
                               <td>{index + 1} </td>{" "}
                               {/* Tracking ID as the user ID */}

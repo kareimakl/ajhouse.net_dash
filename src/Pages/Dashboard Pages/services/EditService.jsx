@@ -3,7 +3,7 @@ import Header from "../../../Components/Admin Components/header/Header";
 import SideNav from "../../../Components/Admin Components/sideNav/SideNav";
 import PageHeader from "../../../Components/Common/page header/PageHeader";
 import { useNavigate, useParams } from "react-router-dom";
-import { useGetCountriesQuery } from "../../../api/countriesSlice";
+import { useGetCountriesQuery } from "../../../api/stories";
 import {
   useGetServiceByIdQuery,
   useUpdateServiceMutation,

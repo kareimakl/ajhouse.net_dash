@@ -1,13 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { apiService } from "../api/userSlice";
-import { countriesApi } from "../api/countriesSlice";
+import { countriesApi } from "../api/stories";
 import servicesApi from "../api/servicesSlice";
 import { messageApi } from "../api/messageSlice";
 import { transactionsApi } from "../api/transactionsSlice";
 import { bookingsApi } from "../api/bookingSlice";
 import { faqApi } from "../api/faqSlice";
-// import { userApi, authReducer } from './userSlice';
+import { usersApi } from "../api/users";
+import { couponsAll } from "../api/coupons";
 
 export const store = configureStore({
   reducer: {
@@ -17,7 +18,9 @@ export const store = configureStore({
     [messageApi.reducerPath]: messageApi.reducer,
     [transactionsApi.reducerPath]: transactionsApi.reducer,
     [bookingsApi.reducerPath]: bookingsApi.reducer,
-    [faqApi.reducerPath]:faqApi.reducer,
+    [usersApi.reducerPath]: usersApi.reducer,
+    [faqApi.reducerPath]: faqApi.reducer,
+    [couponsAll.reducerPath]: couponsAll.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -27,10 +30,10 @@ export const store = configureStore({
       messageApi.middleware,
       transactionsApi.middleware,
       bookingsApi.middleware,
-      faqApi.middleware
+      faqApi.middleware,
+      usersApi.middleware,
+      couponsAll.middleware
     ),
 });
 
-// Optional, but required for refetchOnFocus/refetchOnReconnect behaviors
-// See `setupListeners` docs - takes an optional callback as the 2nd arg for customization
 setupListeners(store.dispatch);

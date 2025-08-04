@@ -95,7 +95,7 @@ const PendingCoupons = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {bookings.bookings.map((booking, index) => (
+                          {bookings?.map((booking, index) => (
                             <tr key={booking.id}>
                               <td>{index + 1} </td>{" "}
                               {/* Tracking ID as the user ID */}

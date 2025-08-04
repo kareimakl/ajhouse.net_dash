@@ -4,7 +4,7 @@ import SideNav from "../../../Components/Admin Components/sideNav/SideNav";
 import PageHeader from "../../../Components/Common/page header/PageHeader";
 import { useNavigate } from "react-router-dom";
 import { useCreateServiceMutation } from "../../../api/servicesSlice";
-import { useGetCountriesQuery } from "../../../api/countriesSlice";
+import { useGetCountriesQuery } from "../../../api/stories";
 
 const AddService = () => {
   const navigate = useNavigate();

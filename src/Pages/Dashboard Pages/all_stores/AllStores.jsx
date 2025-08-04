@@ -2,21 +2,20 @@ import React, { useEffect, useState } from "react";
 import Header from "../../../Components/Admin Components/header/Header";
 import SideNav from "../../../Components/Admin Components/sideNav/SideNav";
 import PageHeader from "../../../Components/Common/page header/PageHeader";
-import AddCountriesForm from "./AddCountriesForm";
+import AddCountriesForm from "./AddStore";
 import Swal from "sweetalert2";
-import "./countries.css";
+import "./Stores.css";
 import {
   useCreateCountryMutation,
   useDeleteCountryMutation,
   useGetCountriesQuery,
   useUpdateCountryMutation,
-} from "../../../api/countriesSlice";
+} from "../../../api/stories";
 
-const AllCountries = () => {
+const AllStores = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [editingCountry, setEditingCountry] = useState(null);
-  const { data: countries, error, isLoading, refetch } = useGetCountriesQuery();
-
+  const { data: countries, refetch } = useGetCountriesQuery();
   const [createCountry] = useCreateCountryMutation();
   const [updateCountry] = useUpdateCountryMutation();
   const [deleteCountry] = useDeleteCountryMutation();
@@ -29,10 +28,10 @@ const AllCountries = () => {
   const handleFormSubmit = async (formData) => {
     const formDataToSend = new FormData();
 
-    formDataToSend.append("name", formData.name);
-    if (formData.image && formData.image.size > 0) {
-      formDataToSend.append("image", formData.image);
-    }
+    formDataToSend.append("title", formData.title);
+    formDataToSend.append("description", formData.description);
+    formDataToSend.append("mediaFile", formData.mediaFile);
+    console.log("Form Data to Send:", formData.mediaFile);
 
     try {
       if (editingCountry) {
@@ -144,67 +143,58 @@ const AllCountries = () => {
                     <hr />
                   </h3>
                   <div className="table-responsive">
-                    {isLoading ? (
-                      <div className="center-loader">
-                        <div className="loader"></div>
-                      </div>
-                    ) : error ? (
-                      <div>Error loading countries</div> // Display error message if there is an error
-                    ) : (
-                      <table className="table text-center table-hover">
-                        <thead className="table-dark">
-                          <tr style={{ fontWeight: "bold" }}>
-                            <th>#</th>
-                            <th>الاسم</th>
-                            <th>الصورة</th>
-                            <th>اجراء</th>
+                    <table className="table text-center table-hover">
+                      <thead className="table-dark">
+                        <tr style={{ fontWeight: "bold" }}>
+                          <th>#</th>
+                          <th>الاسم</th>
+                          <th>الصورة</th>
+                          <th>اجراء</th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        {countries?.map((story, index) => (
+                          <tr key={story.id}>
+                            <td>{index + 1}</td>
+                            <td>{story.title}</td>
+                            <td>
+                              <img
+                                src={story.mediaUrl}
+                                alt="story"
+                                style={{
+                                  width: "70px",
+                                  height: "70px",
+                                  objectFit: "cover",
+                                }}
+                              />
+                            </td>
+                            <td>
+                              <button
+                                className="btn text-success"
+                                title="تعديل"
+                                onClick={() => handleEditCountry(story)}
+                              >
+                                <i
+                                  className="fa fa-edit"
+                                  aria-hidden="true"
+                                ></i>
+                              </button>
+                              <button
+                                className="btn text-danger"
+                                onClick={() => handleDeleteCountry(story.id)}
+                                title="حذف"
+                              >
+                                <i
+                                  className="fa fa-trash"
+                                  aria-hidden="true"
+                                ></i>
+                              </button>
+                            </td>
                           </tr>
-                        </thead>
-                        <tbody>
-                          {countries.map((country, index) => (
-                            <tr key={country.id}>
-                              <td>{index + 1}</td>
-                              <td>{country.name}</td>
-                              <td>
-                                <img
-                                  src={`https://xealkhalej-backend.alwajez.com/${country.image}`}
-                                  alt="country"
-                                  style={{
-                                    width: "70px",
-                                    height: "70px",
-                                    objectFit: "cover",
-                                  }}
-                                />
-                              </td>
-                              <td>
-                                <button
-                                  className="btn text-success"
-                                  title="تعديل"
-                                  onClick={() => handleEditCountry(country)}
-                                >
-                                  <i
-                                    className="fa fa-edit"
-                                    aria-hidden="true"
-                                  ></i>
-                                </button>
-                                <button
-                                  className="btn text-danger"
-                                  onClick={() =>
-                                    handleDeleteCountry(country.id)
-                                  }
-                                  title="حذف"
-                                >
-                                  <i
-                                    className="fa fa-trash"
-                                    aria-hidden="true"
-                                  ></i>
-                                </button>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    )}
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
@@ -216,4 +206,4 @@ const AllCountries = () => {
   );
 };
 
-export default AllCountries;
+export default AllStores;

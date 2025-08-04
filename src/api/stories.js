@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 // Define the base URL of your Laravel API
-const baseUrl = "https://xealkhalej-backend.alwajez.com/api/user";
+const baseUrl = "http://stories.camion-app.com:3001";
 
 // Create the API slice for countries
 export const countriesApi = createApi({
@@ -9,29 +9,30 @@ export const countriesApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl,
     prepareHeaders: (headers) => {
-      // Add Authorization token if needed
-      const token = localStorage.getItem("token");
+      const token =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyMGMwYzI3YS01MzQwLTQ1ODAtOGZjYy0zZDg3NDNkZWY2OWYiLCJlbWFpbCI6ImluZm9Aa2FyaWFrLmNvbSIsInBob25lIjoiKzIwMTA5MzM3ODY4MSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1NDMxNjQ0OSwiZXhwIjoxNzU0OTIxMjQ5fQ.oBpeUCA50SkZqmUD9f7B5YfM5ZEboamMgrhFMUTCfFs";
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
       }
       return headers;
     },
   }),
+
   endpoints: (builder) => ({
     // Fetch all countries (GET)
     getCountries: builder.query({
-      query: () => "/countries",
+      query: () => "/stories",
     }),
 
     // Get a single country by ID (GET)
     getCountryById: builder.query({
-      query: (id) => `/show-country/${id}`,
+      query: (id) => `/stories/${id}`,
     }),
 
     // Create a new country (POST)
     createCountry: builder.mutation({
       query: (newCountry) => ({
-        url: "/add-country",
+        url: "/stories",
         method: "POST",
         body: newCountry,
       }),
@@ -40,8 +41,8 @@ export const countriesApi = createApi({
     // Update an existing country (PUT)
     updateCountry: builder.mutation({
       query: ({ id, updatedCountry }) => ({
-        url: `/update-country/${id}`,
-        method: "POST",
+        url: `/stories/${id}`,
+        method: "PUT",
         body: updatedCountry,
       }),
     }),
@@ -49,7 +50,7 @@ export const countriesApi = createApi({
     // Delete a country (DELETE)
     deleteCountry: builder.mutation({
       query: (id) => ({
-        url: `/delete-country/${id}`,
+        url: `/stories/${id}`,
         method: "DELETE",
       }),
     }),

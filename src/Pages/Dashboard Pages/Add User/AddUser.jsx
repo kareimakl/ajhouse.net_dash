@@ -4,17 +4,20 @@ import Header from "../../../Components/Admin Components/header/Header";
 import SideNav from "../../../Components/Admin Components/sideNav/SideNav";
 import PageHeader from "../../../Components/Common/page header/PageHeader";
 import { useNavigate } from "react-router-dom";
-
+import { useCreateUserMutation } from "../../../api/users";
 const AddUser = () => {
   const navigate = useNavigate();
+  const [createUser] = useCreateUserMutation();
 
   const [error] = useState("");
   const [formData, setFormData] = useState({
-    name: "",
     email: "",
     phone: "",
-    password: "",
+    fullName: "",
     role: "",
+    gender: "",
+    nationality: "",
+    country: "",
   });
 
   const handleChange = (e) => {
@@ -41,7 +44,29 @@ const AddUser = () => {
                   {" "}
                   الرجاء ملء الحقول التالية والتاكد من صحة البيانات قبل التاكيد{" "}
                 </p>
-                <form className="forms-sample">
+                <form
+                  className="forms-sample"
+                  onSubmit={async (e) => {
+                    e.preventDefault();
+
+                    try {
+                      const userToCreate = {
+                        fullName: formData.fullName,
+                        email: formData.email,
+                        phone: formData.phone,
+                        role: formData.role,
+                        gender: formData.gender || "male", // أو اعملها dropdown لاحقًا
+                        nationality: formData.nationality || "egypt",
+                        country: formData.country || "egypt",
+                      };
+
+                      await createUser(userToCreate).unwrap();
+                      navigate("/admin/all-users");
+                    } catch (err) {
+                      console.error("فشل في إنشاء المستخدم", err);
+                    }
+                  }}
+                >
                   <div className="form-group col-sm-12">
                     <div className="row">
                       <div className="col-sm-6">
@@ -49,11 +74,10 @@ const AddUser = () => {
                         <input
                           type="text"
                           className="form-control"
-                          id="exampleInputName1"
                           placeholder="ادخل الاسم"
-                          value={formData.name}
+                          value={formData.fullName}
                           onChange={handleChange}
-                          name="name"
+                          name="fullName"
                         />
                         {error && <p className="text-danger">{error.name}</p>}
                       </div>
@@ -112,19 +136,49 @@ const AddUser = () => {
                       </div>
                     </div>
                   </div>
+                  <div className="form-group col-sm-12">
+                    <div className="row">
+                      <div className="col-sm-6">
+                        <label>الجنس</label>
+                        <select
+                          className="form-control"
+                          name="gender"
+                          value={formData.gender}
+                          onChange={handleChange}
+                        >
+                          <option value="" disabled selected>
+                            اختر الجنس
+                          </option>
+                          <option value="male">ذكر</option>
+                          <option value="female">أنثى</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="form-group col-sm-12">
+                    <div className="row">
+                      <div className="col-sm-6">
+                        <label>الجنسية</label>
+                        <input
+                          className="form-control"
+                          name="nationality"
+                          value={formData.nationality}
+                          onChange={handleChange}
+                          placeholder="مثال: Egypt"
+                        />
+                      </div>
 
-                  <div className="form-group">
-                    <label htmlFor="exampleInputPassword4">كلمة المرور</label>
-                    <input
-                      type="password"
-                      className="form-control"
-                      id="exampleInputPassword4"
-                      placeholder="ادخل كلمة المرور"
-                      value={formData.password}
-                      onChange={handleChange}
-                      name="password"
-                    />
-                    {error && <p className="text-danger">{error.password}</p>}
+                      <div className="col-sm-6">
+                        <label>الدولة</label>
+                        <input
+                          className="form-control"
+                          name="country"
+                          value={formData.country}
+                          onChange={handleChange}
+                          placeholder="مثال: Egypt"
+                        />
+                      </div>
+                    </div>
                   </div>
 
                   <div className="d-flex justify-content-center gap-2">
