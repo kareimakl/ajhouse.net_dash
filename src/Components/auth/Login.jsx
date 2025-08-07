@@ -6,7 +6,8 @@ import { useLoginUserMutation } from "../../api/userSlice";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [formData, setFormData] = useState({ email: "", phone: "" });
+
   const [error, setError] = useState("");
 
   // Use the mutation hook
@@ -18,16 +19,22 @@ const Login = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Trigger the login API request
-      const response = await loginUser(formData).unwrap();
+      const response = await loginUser({
+        email: formData.email,
+        phone: formData.phone,
+      }).unwrap();
 
       if (response) {
+        // ✅ Save email and phone for verification step
+        localStorage.setItem("email", formData.email);
+        localStorage.setItem("phone", formData.phone);
         localStorage.setItem("token", response.token);
-        navigate("/"); // Navigate to homepage on success
+
+        // ✅ Navigate to verify page
+        navigate("/auth/verify");
       }
     } catch (err) {
       setError(apiError?.data?.message || "Invalid credentials");
@@ -64,19 +71,21 @@ const Login = () => {
                 />
               </div>
               <div className="form-group d-flex flex-column">
-                <label className="mb-2" htmlFor="password">
-                  رقم المرور
+                <label className="mb-2" htmlFor="phone">
+                  رقم الهاتف
                 </label>
                 <input
-                  type="password"
-                  name="password"
-                  id="password"
-                  placeholder="رقم المرور"
-                  value={formData.password}
+                  style={{ textAlign: "left" }}
+                  type="text"
+                  name="phone"
+                  id="phone"
+                  placeholder="+201558820103"
+                  value={formData.phone}
                   onChange={handleChange}
                   required
                 />
               </div>
+
               <button
                 className="main-btn mt-2"
                 type="submit"

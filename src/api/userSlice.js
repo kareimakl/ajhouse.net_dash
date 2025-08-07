@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 // Define your base URL
-const baseUrl = "https://xealkhalej-backend.alwajez.com/api"; // Replace with your actual base URL
+const baseUrl = "http://api-gateway.camion-app.com/users/auth"; // Replace with your actual base URL
 
 // Function to create request
 const createRequest = (url) => ({ url });
@@ -13,7 +13,8 @@ export const apiService = createApi({
     baseUrl,
     prepareHeaders: (headers) => {
       // Get the token from localStorage (or Redux state)
-      const token = localStorage.getItem("token");
+      const token =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmMDc1YzIwZS1iMTVjLTQ5MzktODQ0ZC0zNmFjYjcyYjBiMmMiLCJlbWFpbCI6Ik1lZWZyQGdhbWlsLmNvbSIsInBob25lIjoiKzIwMTExNjA2NDI5MSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1NDQwMDk1NiwiZXhwIjoxNzU1MDA1NzU2fQ.oyjahKk1MJy0YvLRFzVZH-UfBPmOytjORLv6wvvV40Y";
 
       // If a token exists, add it to the headers
       if (token) {
@@ -28,7 +29,7 @@ export const apiService = createApi({
     // Example login request (modify this as per your API endpoint)
     loginUser: builder.mutation({
       query: (userCredentials) => ({
-        url: "/user/login",
+        url: "/login",
         method: "POST",
         body: userCredentials, // Sending user credentials (email and password)
       }),
