@@ -1,15 +1,13 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const baseUrl = "http://api-gateway.camion-app.com";
+const baseUrl = "https://api-gateway.camion-app.com";
 
 export const usersApi = createApi({
   reducerPath: "usersApi",
   baseQuery: fetchBaseQuery({
     baseUrl,
     prepareHeaders: (headers, { getState }) => {
-      // const token = localStorage.getItem("token");
-      const token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyMGMwYzI3YS01MzQwLTQ1ODAtOGZjYy0zZDg3NDNkZWY2OWYiLCJlbWFpbCI6ImluZm9Aa2FyaWFrLmNvbSIsInBob25lIjoiKzIwMTA5MzM3ODY4MSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1NDMxNjQ0OSwiZXhwIjoxNzU0OTIxMjQ5fQ.oBpeUCA50SkZqmUD9f7B5YfM5ZEboamMgrhFMUTCfFs";
+      const token = localStorage.getItem("token");
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
       }
@@ -37,15 +35,16 @@ export const usersApi = createApi({
     updateUser: builder.mutation({
       query: ({ id, updatedUser }) => ({
         url: `/users/${id}`,
-        method: "PUT",
+        method: "PATCH",
         body: updatedUser,
       }),
     }),
 
     deleteUser: builder.mutation({
-      query: (id) => ({
+      query: (id, deleteUser) => ({
         url: `/users/${id}`,
         method: "DELETE",
+        body: deleteUser,
       }),
     }),
   }),

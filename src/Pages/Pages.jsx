@@ -29,7 +29,6 @@ import EditOrders from "./Dashboard Pages/orders/EditOrder";
 import Faqs from "./Dashboard Pages/faqs/Faqs";
 import AddFaq from "./Dashboard Pages/faqs/AddFaq";
 import EditFaq from "./Dashboard Pages/faqs/EditFaq";
-import Verify from "./Dashboard Pages/Verify/Verify";
 const pages = () => {
   return (
     <div className="pages">
@@ -52,14 +51,16 @@ const pages = () => {
               </ProtectedRoute>
             }
           />
-          <Route
+
+          {/* <Route
             path="/auth/verify"
-            element={
+            element={ 
               <ProtectedRoute>
                 <Verify />
               </ProtectedRoute>
             }
-          />
+          /> */}
+
           <Route
             path="/admin/add-user"
             element={

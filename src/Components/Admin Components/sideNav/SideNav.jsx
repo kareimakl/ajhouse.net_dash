@@ -58,11 +58,11 @@ const SideNav = ({ isSidebarOpen }) => {
                     الإحصائيات
                   </NavLink>
                 </li>
-                <li className="nav-item">
+                {/* <li className="nav-item">
                   <NavLink className="nav-link" to="/admin/orders">
                     آخر الطلبات
                   </NavLink>
-                </li>
+                </li> */}
               </ul>
             </div>
           </li>

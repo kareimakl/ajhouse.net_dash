@@ -1,4 +1,4 @@
-import React, { useEffect} from "react";
+import React, { useEffect } from "react";
 import Header from "../../../Components/Admin Components/header/Header";
 import SideNav from "../../../Components/Admin Components/sideNav/SideNav";
 import PageHeader from "../../../Components/Common/page header/PageHeader";
@@ -6,7 +6,7 @@ import {
   useGetUsersQuery,
   useDeleteUserMutation,
   useUpdateUserMutation,
-} from "../../../api/users"; // assuming path is correct
+} from "../../../api/users";
 import Swal from "sweetalert2";
 
 const AllUsers = () => {
@@ -122,36 +122,38 @@ const AllUsers = () => {
                                     Swal.fire({
                                       title: "تعديل المستخدم",
                                       html: `
-        <input type="text" id="name" class="swal2-input" value="${user.fullName}" placeholder="الاسم"/>
+        <input type="text" id="phone" class="swal2-input" value="${user.phone}" placeholder="الاسم"/>
         <input type="email" id="email" class="swal2-input" value="${user.email}" placeholder="البريد"/>
       `,
                                       confirmButtonText: "حفظ",
                                       preConfirm: () => {
-                                        const fullName =
-                                          document.getElementById("name").value;
+                                        const phone =
+                                          document.getElementById(
+                                            "phone"
+                                          ).value;
                                         const email =
                                           document.getElementById(
                                             "email"
                                           ).value;
 
-                                        if (!fullName || !email) {
+                                        if (!phone || !email) {
                                           Swal.showValidationMessage(
                                             "الرجاء إدخال الاسم والبريد الإلكتروني"
                                           );
                                           return false;
                                         }
 
-                                        return { fullName, email };
+                                        return { phone, email };
                                       },
                                     }).then((result) => {
                                       if (result.isConfirmed && result.value) {
-                                        const updatedData = {
+                                        updateUser({
                                           id: user.id,
-                                          fullName: result.value.fullName,
-                                          email: result.value.email,
-                                        };
-
-                                        updateUser(updatedData)
+                                          updatedUser: {
+                                            phone: result.value.phone,
+                                            email: result.value.email,
+                                          },
+                                        })
                                           .unwrap()
                                           .then(() => {
                                             Swal.fire(

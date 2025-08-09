@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-const baseUrl = "https://xealkhalej-backend.alwajez.com/api/user";
+const baseUrl = "https://buckydrop.camion-app.com";
 // Define the API slice
 export const servicesApi = createApi({
   reducerPath: "servicesApi",
@@ -15,32 +15,32 @@ export const servicesApi = createApi({
   }),
   endpoints: (builder) => ({
     getServices: builder.query({
-      query: () => "/services",
+      query: () => `/api/products`,
     }),
-    getServiceById: builder.query({
-      query: (id) => `/show-service/${id}`,
-    }),
+    // getServiceById: builder.query({
+    //   query: (id) => `/show-service/${id}`,
+    // }),
 
-    createService: builder.mutation({
-      query: (newService) => ({
-        url: "/add-service",
-        method: "POST",
-        body: newService,
-      }),
-    }),
-    updateService: builder.mutation({
-      query: ({ id, updatedService }) => ({
-        url: `/update-service/${id}`,
-        method: "POST",
-        body: updatedService,
-      }),
-    }),
-    deleteService: builder.mutation({
-      query: (id) => ({
-        url: `/delete-service/${id}`,
-        method: "DELETE",
-      }),
-    }),
+    // createService: builder.mutation({
+    //   query: (newService) => ({
+    //     url: "/add-service",
+    //     method: "POST",
+    //     body: newService,
+    //   }),
+    // }),
+    // updateService: builder.mutation({
+    //   query: ({ id, updatedService }) => ({
+    //     url: `/update-service/${id}`,
+    //     method: "POST",
+    //     body: updatedService,
+    //   }),
+    // }),
+    // deleteService: builder.mutation({
+    //   query: (id) => ({
+    //     url: `/delete-service/${id}`,
+    //     method: "DELETE",
+    //   }),
+    // }),
   }),
 });
 

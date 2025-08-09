@@ -16,6 +16,7 @@ const AddUser = () => {
     fullName: "",
     role: "",
     gender: "",
+    password: "",
     nationality: "",
     country: "",
   });
@@ -55,7 +56,9 @@ const AddUser = () => {
                         email: formData.email,
                         phone: formData.phone,
                         role: formData.role,
-                        gender: formData.gender || "male", // أو اعملها dropdown لاحقًا
+                        password:
+                          formData.role === "admin" ? formData.password : "",
+                        gender: formData.gender || "male",
                         nationality: formData.nationality || "egypt",
                         country: formData.country || "egypt",
                       };
@@ -84,7 +87,7 @@ const AddUser = () => {
                       <div className="col-sm-6">
                         <label htmlFor="exampleInputName1">الهاتف</label>
                         <input
-                          type="number"
+                          type="text"
                           className="form-control"
                           id="exampleInputName1"
                           placeholder="ادخل الهاتف"
@@ -93,65 +96,6 @@ const AddUser = () => {
                           name="phone"
                         />
                         {error && <p className="text-danger">{error.phone}</p>}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="form-group col-sm-12">
-                    <div className="row">
-                      <div className="col-sm-6">
-                        <label htmlFor="exampleInputEmail3">
-                          البريد الالكتروني
-                        </label>
-                        <input
-                          type="email"
-                          className="form-control"
-                          id="exampleInputEmail3"
-                          placeholder="ex: tech.minds@gmail.com"
-                          value={formData.email}
-                          onChange={handleChange}
-                          name="email"
-                          dir="ltr"
-                        />
-
-                        {error && <p className="text-danger">{error.email}</p>}
-                      </div>
-                      <div className="col-sm-6">
-                        <label htmlFor="exampleInputName1"> اختر الدور </label>
-                        <select
-                          dir="rtl"
-                          className="form-control form-select ps-4"
-                          value={formData?.role}
-                          onChange={handleChange}
-                          name="role"
-                        >
-                          <option value="" disabled selected>
-                            اختر الدور
-                          </option>
-                          <option value="admin">مدير</option>
-                          <option value="Marketer">مسوق</option>
-                          <option value="clinet">مشتري </option>
-                        </select>
-                        {error && <p className="text-danger">{error.role}</p>}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="form-group col-sm-12">
-                    <div className="row">
-                      <div className="col-sm-6">
-                        <label>الجنس</label>
-                        <select
-                          className="form-control"
-                          name="gender"
-                          value={formData.gender}
-                          onChange={handleChange}
-                        >
-                          <option value="" disabled selected>
-                            اختر الجنس
-                          </option>
-                          <option value="male">ذكر</option>
-                          <option value="female">أنثى</option>
-                        </select>
                       </div>
                     </div>
                   </div>
@@ -178,6 +122,85 @@ const AddUser = () => {
                           placeholder="مثال: Egypt"
                         />
                       </div>
+                    </div>
+                  </div>
+                  <div className="form-group col-sm-12">
+                    <div className="row">
+                      <div className="col-sm-6">
+                        <label htmlFor="exampleInputEmail3">
+                          البريد الالكتروني
+                        </label>
+                        <input
+                          type="email"
+                          className="form-control"
+                          id="exampleInputEmail3"
+                          placeholder="ex: tech.minds@gmail.com"
+                          value={formData.email}
+                          onChange={handleChange}
+                          name="email"
+                          dir="ltr"
+                        />
+
+                        {error && <p className="text-danger">{error.email}</p>}
+                      </div>
+                      <div className=" col-sm-6">
+                        <div className="row">
+                          <div className="col-sm-6">
+                            <label>الجنس</label>
+                            <select
+                              className="form-control"
+                              name="gender"
+                              value={formData.gender}
+                              onChange={handleChange}
+                            >
+                              <option value="" disabled selected>
+                                اختر الجنس
+                              </option>
+                              <option value="male">ذكر</option>
+                              <option value="female">أنثى</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="form-group col-sm-12">
+                    <div className="row">
+                      <div className="col-sm-6">
+                        <label htmlFor="exampleInputName1"> اختر الدور </label>
+                        <select
+                          className="form-control form-select ps-4"
+                          value={formData?.role}
+                          onChange={handleChange}
+                          name="role"
+                        >
+                          <option value="" disabled>
+                            اختر الدور
+                          </option>
+                          <option value="admin">مدير</option>
+                          <option value="affiliate">مسوق</option>
+                          <option value="user">مشتري</option>
+                        </select>
+                        {error && <p className="text-danger">{error.role}</p>}
+                      </div>
+
+                      {formData.role === "admin" && (
+                        <div className="form-group col-sm-6">
+                          <div className="row">
+                            <div className="col-sm-6">
+                              <label>كلمة المرور</label>
+                              <input
+                                type="password"
+                                className="form-control"
+                                placeholder="ادخل كلمة المرور"
+                                value={formData.password}
+                                onChange={handleChange}
+                                name="password"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
 

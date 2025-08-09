@@ -1,13 +1,11 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import the mutation hook
-// import img from "../../assets/images/logo-camion.png";
+import { useState } from "react";
 import "./auth.css";
+import { useNavigate } from "react-router-dom";
 import { useLoginUserMutation } from "../../api/userSlice";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({ email: "", phone: "" });
-
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
 
   // Use the mutation hook
@@ -19,22 +17,16 @@ const Login = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await loginUser({
-        email: formData.email,
-        phone: formData.phone,
-      }).unwrap();
+      // Trigger the login API request
+      const response = await loginUser(formData).unwrap();
 
       if (response) {
-        // ✅ Save email and phone for verification step
-        localStorage.setItem("email", formData.email);
-        localStorage.setItem("phone", formData.phone);
-        localStorage.setItem("token", response.token);
-
-        // ✅ Navigate to verify page
-        navigate("/auth/verify");
+        localStorage.setItem("token", response.accessToken);
+        navigate("/"); // Navigate to homepage on success
       }
     } catch (err) {
       setError(apiError?.data?.message || "Invalid credentials");
@@ -48,7 +40,7 @@ const Login = () => {
           <form className="form" onSubmit={handleSubmit}>
             <div className="d-flex justify-content-center">
               <img
-                src="../assets/images/apple-icon.png"
+                src="/apple-icon.png"
                 alt="logo"
                 style={{ width: "230px" }}
               />
@@ -71,21 +63,19 @@ const Login = () => {
                 />
               </div>
               <div className="form-group d-flex flex-column">
-                <label className="mb-2" htmlFor="phone">
-                  رقم الهاتف
+                <label className="mb-2" htmlFor="password">
+                  كلمة المرور
                 </label>
                 <input
-                  style={{ textAlign: "left" }}
-                  type="text"
-                  name="phone"
-                  id="phone"
-                  placeholder="+201558820103"
-                  value={formData.phone}
+                  type="password"
+                  name="password"
+                  id="password"
+                  placeholder="ادخل كلمة المرور"
+                  value={formData.password}
                   onChange={handleChange}
                   required
                 />
               </div>
-
               <button
                 className="main-btn mt-2"
                 type="submit"

@@ -1,45 +1,35 @@
-import { useEffect } from "react";
+import { useState } from "react";
 import Header from "../../../Components/Admin Components/header/Header";
 import SideNav from "../../../Components/Admin Components/sideNav/SideNav";
 import PageHeader from "../../../Components/Common/page header/PageHeader";
-import {
-  useDeleteServiceMutation,
-  useGetServicesQuery,
-} from "../../../api/servicesSlice";
-import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+import { useGetServicesQuery } from "../../../api/servicesSlice";
 
 const Services = () => {
-  const { data: services, error, isLoading, refetch } = useGetServicesQuery();
-  const navigate = useNavigate();
-  const [deleteService] = useDeleteServiceMutation();
-  useEffect(() => {
-    refetch();
-    document.body.classList.remove("sidebar-icon-only"); // Close sidebar on page change
-  });
+  const { data, isLoading, error } = useGetServicesQuery();
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
-  const handleDelete = async (id) => {
-    Swal.fire({
-      title: "هل أنت متأكد؟",
-      text: "لن تتمكن من التراجع عن هذا!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "نعم، احذفها!",
-      cancelButtonText: "إلغاء",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          await deleteService(id).unwrap();
-          refetch();
-          Swal.fire("تم الحذف!", "تم حذف المنتجات بنجاح.", "success");
-        } catch (error) {
-          Swal.fire("خطأ!", "حدث خطأ أثناء محاولة حذف المنتجات.", "error");
-        }
-      }
-    });
+  console.log("API Response:", data);
+
+  const services = Array.isArray(data)
+    ? data
+    : Array.isArray(data?.products)
+    ? data.products
+    : [];
+
+  const totalPages = Math.ceil(services.length / itemsPerPage);
+
+  const paginatedServices = services.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
   };
+
   return (
     <div>
       <Header />
@@ -47,7 +37,7 @@ const Services = () => {
         <SideNav />
         <div className="add_user_container">
           <div style={{ marginTop: "30px" }}>
-            <PageHeader name=" CV" icon="fa fa-cogs" />
+            <PageHeader name="كل الكبونات" icon="fa fa-cogs" />
           </div>
           <div className="row content-wrapper">
             <div className="col-12 grid-margin">
@@ -58,7 +48,7 @@ const Services = () => {
                       className="fa fa-angle-double-left"
                       aria-hidden="true"
                     ></i>
-                    كل الكوبونات
+                    كل المنتجات
                     <i
                       className="fa fa-angle-double-right"
                       aria-hidden="true"
@@ -68,71 +58,130 @@ const Services = () => {
                   <div className="table-responsive">
                     {isLoading ? (
                       <div className="center-loader">
-                        <div class="loader"></div>
+                        <div className="loader"></div>
                       </div>
                     ) : error ? (
-                      <div>Error loading users</div> // Display error message if there is an error
+                      <div className="text-danger text-center">
+                        Error loading services
+                      </div>
+                    ) : services.length === 0 ? (
+                      <div className="text-center">لا يوجد بيانات</div>
                     ) : (
-                      <table className="table text-center table-hover">
-                        <thead className="table-dark">
-                          <tr style={{ fontWeight: "bold" }}>
-                            <th># </th>
-                            <th> الاسم </th>
-                            <th>الوصف</th>
-                            <th>السعر</th>
-                            <th>الصوره</th>
-                            <th> اجراء </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {services.map((service, index) => (
-                            <tr key={service.id}>
-                              <td>{index + 1} </td>{" "}
-                              {/* Tracking ID as the user ID */}
-                              <td>{service.title}</td>
-                              <td>{service.description}</td>
-                              <td>{service.price}</td>
-                              <td>
-                                <img
-                                  src={`https://xealkhalej-backend.alwajez.com/${service.image}`}
-                                  alt="user"
-                                  style={{
-                                    width: "100px",
-                                    height: "100px",
-                                    objectFit: "cover",
+                      <>
+                        <table className="table">
+                          <tbody>
+                            {paginatedServices.map((product, index) => (
+                              <tr key={product.id || index}>
+                                <td>
+                                  {(currentPage - 1) * itemsPerPage + index + 1}
+                                </td>
+                                <td>{product.name}</td>
+                                <td
+                                  dangerouslySetInnerHTML={{
+                                    __html:
+                                      product.short_description ||
+                                      product.description ||
+                                      "",
                                   }}
-                                />
-                              </td>
-                              <td>
+                                ></td>
+                                <td>
+                                  {product.prices?.price}{" "}
+                                  {product.prices?.currency_symbol}
+                                </td>
+                                <td>
+                                  {product.images?.length > 0 && (
+                                    <img
+                                      src={product.images[0].src}
+                                      alt={product.name}
+                                      style={{
+                                        width: "100px",
+                                        height: "100px",
+                                        objectFit: "cover",
+                                      }}
+                                    />
+                                  )}
+                                </td>
+                                <td>
+                                  <a
+                                    href={`https://camion-six.vercel.app/en/shop/${product.id}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="btn"
+                                    style={{
+                                      background: "#b3261e",
+                                      color: "#fff",
+                                    }}
+                                  >
+                                    View Product
+                                  </a>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+
+                        <div className="d-flex justify-content-center mt-3">
+                          <nav>
+                            <ul className="pagination">
+                              <li
+                                style={{
+                                  cursor: "pointer",
+                                }}
+                                className={`page-item ${
+                                  currentPage === 1 ? "disabled" : ""
+                                }`}
+                              >
                                 <button
-                                  className="btn text-success"
-                                  title="تعديل"
+                                  className="page-link"
                                   onClick={() =>
-                                    navigate(
-                                      `/admin/edit-service/${service.id}`
-                                    )
+                                    handlePageChange(currentPage - 1)
                                   }
                                 >
-                                  <i
-                                    className="fa fa-edit"
-                                    aria-hidden="true"
-                                  ></i>
+                                  السابق
                                 </button>
-                                <button
-                                  className="btn text-danger"
-                                  onClick={() => handleDelete(service.id)}
-                                  title="حذف"
+                              </li>
+
+                              {Array.from({ length: totalPages }, (_, i) => (
+                                <li
+                                  style={{
+                                    background: "#b3261e",
+                                    cursor: "pointer",
+                                  }}
+                                  key={i}
+                                  className={`page-item ${
+                                    currentPage === i + 1 ? "active" : ""
+                                  }`}
                                 >
-                                  <i
-                                    className="fa fa-trash"
-                                    aria-hidden="true"
-                                  ></i>
+                                  <button
+                                    className="page-link"
+                                    onClick={() => handlePageChange(i + 1)}
+                                  >
+                                    {i + 1}
+                                  </button>
+                                </li>
+                              ))}
+
+                              <li
+                                style={{
+                                  cursor: "pointer",
+                                }}
+                                className={`page-item ${
+                                  currentPage === totalPages ? "disabled" : ""
+                                }`}
+                              >
+                                <button
+                                  className="page-link"
+                                  onClick={() =>
+                                    handlePageChange(currentPage + 1)
+                                  }
+                                >
+                                  التالي
                                 </button>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                              </li>
+                            </ul>
+                          </nav>
+                        </div>
+                      </>
                     )}
                   </div>
                 </div>
