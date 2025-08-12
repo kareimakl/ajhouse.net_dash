@@ -9,8 +9,6 @@ const Services = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-  console.log("API Response:", data);
-
   const services = Array.isArray(data)
     ? data
     : Array.isArray(data?.products)
@@ -30,6 +28,16 @@ const Services = () => {
     }
   };
 
+  const handleEditService = (service) => {
+    console.log("Edit service:", service);
+    // TODO: افتح مودال التعديل هنا
+  };
+
+  const handleDeleteService = (id) => {
+    console.log("Delete service ID:", id);
+    // TODO: نفذ الحذف هنا
+  };
+
   return (
     <div>
       <Header />
@@ -39,22 +47,18 @@ const Services = () => {
           <div style={{ marginTop: "30px" }}>
             <PageHeader name="كل الكبونات" icon="fa fa-cogs" />
           </div>
+
           <div className="row content-wrapper">
             <div className="col-12 grid-margin">
               <div className="card">
                 <div className="p-3">
                   <h3 className="latest_users mt-2 mb-3 text-center">
-                    <i
-                      className="fa fa-angle-double-left"
-                      aria-hidden="true"
-                    ></i>
+                    <i className="fa fa-angle-double-left"></i>
                     كل المنتجات
-                    <i
-                      className="fa fa-angle-double-right"
-                      aria-hidden="true"
-                    ></i>
+                    <i className="fa fa-angle-double-right"></i>
                     <hr />
                   </h3>
+
                   <div className="table-responsive">
                     {isLoading ? (
                       <div className="center-loader">
@@ -68,65 +72,70 @@ const Services = () => {
                       <div className="text-center">لا يوجد بيانات</div>
                     ) : (
                       <>
-                        <table className="table">
+                        <table className="table text-center table-hover">
+                          <thead className="table-dark">
+                            <tr>
+                              <th>#</th>
+                              <th>الاسم</th>
+                              <th>الصورة/الفيديو</th>
+                              <th>الإجراءات</th>
+                            </tr>
+                          </thead>
                           <tbody>
-                            {paginatedServices.map((product, index) => (
-                              <tr key={product.id || index}>
-                                <td>
-                                  {(currentPage - 1) * itemsPerPage + index + 1}
-                                </td>
-                                <td>{product.name}</td>
-                                <td
-                                  dangerouslySetInnerHTML={{
-                                    __html:
-                                      product.short_description ||
-                                      product.description ||
-                                      "",
-                                  }}
-                                ></td>
-                                <td>
-                                  {product.prices?.price}{" "}
-                                  {product.prices?.currency_symbol}
-                                </td>
-                                <td>
-                                  {product.images?.length > 0 && (
-                                    <img
-                                      src={product.images[0].src}
-                                      alt={product.name}
-                                      style={{
-                                        width: "100px",
-                                        height: "100px",
-                                        objectFit: "cover",
-                                      }}
-                                    />
-                                  )}
-                                </td>
-                                <td>
-                                  <a
-                                    href={`https://camion-six.vercel.app/en/shop/${product.id}`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="btn"
-                                    style={{
-                                      background: "#b3261e",
-                                      color: "#fff",
-                                    }}
-                                  >
-                                    View Product
-                                  </a>
-                                </td>
-                              </tr>
-                            ))}
+                            {paginatedServices.map((service, index) => {
+                              const isVideo =
+                                service.mediaUrl?.match(/\.(mp4|webm|ogg)$/i);
+
+                              return (
+                                <tr key={service.id}>
+                                  {/* رقم الترتيب */}
+                                  <td>
+                                    {(currentPage - 1) * itemsPerPage +
+                                      index +
+                                      1}
+                                  </td>
+
+                                  {/* اسم المنتج */}
+                                  <td>{service.title}</td>
+
+                                  {/* صورة أو فيديو صغير */}
+                                  <td>
+                                    {isVideo ? (
+                                      <video
+                                        src={service.mediaUrl}
+                                        style={{
+                                          width: "70px",
+                                          height: "70px",
+                                          objectFit: "cover",
+                                          borderRadius: "6px",
+                                          backgroundColor: "#000",
+                                        }}
+                                        muted
+                                      />
+                                    ) : (
+                                      <img
+                                        src={service.mediaUrl}
+                                        alt={service.title}
+                                        style={{
+                                          width: "70px",
+                                          height: "70px",
+                                          objectFit: "cover",
+                                          borderRadius: "6px",
+                                        }}
+                                      />
+                                    )}
+                                  </td>
+                                </tr>
+                              );
+                            })}
                           </tbody>
                         </table>
 
+                        {/* Pagination */}
                         <div className="d-flex justify-content-center mt-3">
                           <nav>
                             <ul className="pagination">
                               <li
-                                style={{
-                                  cursor: "pointer",
-                                }}
                                 className={`page-item ${
                                   currentPage === 1 ? "disabled" : ""
                                 }`}
@@ -143,10 +152,6 @@ const Services = () => {
 
                               {Array.from({ length: totalPages }, (_, i) => (
                                 <li
-                                  style={{
-                                    background: "#b3261e",
-                                    cursor: "pointer",
-                                  }}
                                   key={i}
                                   className={`page-item ${
                                     currentPage === i + 1 ? "active" : ""
@@ -162,9 +167,6 @@ const Services = () => {
                               ))}
 
                               <li
-                                style={{
-                                  cursor: "pointer",
-                                }}
                                 className={`page-item ${
                                   currentPage === totalPages ? "disabled" : ""
                                 }`}

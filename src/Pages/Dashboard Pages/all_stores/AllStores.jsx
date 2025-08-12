@@ -19,46 +19,38 @@ const AllStores = () => {
   const [createCountry] = useCreateCountryMutation();
   const [updateCountry] = useUpdateCountryMutation();
   const [deleteCountry] = useDeleteCountryMutation();
-
   const [isSidebarOpen] = useState(true);
-  // const location = useLocation();
-  // const toggleSidebar = () => {
-  //   setIsSidebarOpen(!isSidebarOpen);
-  // };
+  const [videoLoaded, setVideoLoaded] = useState({});
+
+  const [storyVideo, setStoryVideo] = useState(null);
+  const [loadingProgress, setLoadingProgress] = useState(0);
+
   const handleFormSubmit = async (formData) => {
     const formDataToSend = new FormData();
-
     formDataToSend.append("title", formData.title);
     formDataToSend.append("description", formData.description);
     formDataToSend.append("mediaFile", formData.mediaFile);
-    console.log("Form Data to Send:", formData.mediaFile);
 
     try {
       if (editingCountry) {
-        // Update country
         await updateCountry({
           id: editingCountry.id,
           updatedCountry: formDataToSend,
         }).unwrap();
         refetch();
-        setShowPopup(false); // Reset editing state
+        setShowPopup(false);
       } else {
-        // Create a new country
-        try {
-          await createCountry(formDataToSend).unwrap();
-        } catch (error) {
-          console.log(error);
-        }
+        await createCountry(formDataToSend).unwrap();
       }
-      setShowPopup(false); // Close the form
-      refetch(); // Refresh the data
+      setShowPopup(false);
+      refetch();
     } catch (err) {
       console.error("Failed to save country:", err);
     }
   };
 
   const handleEditCountry = (country) => {
-    setEditingCountry(country); // Set country to be edited
+    setEditingCountry(country);
     setShowPopup(true);
   };
 
@@ -77,17 +69,18 @@ const AllStores = () => {
         try {
           await deleteCountry(countryId).unwrap();
           Swal.fire("تم الحذف!", "تم حذف الدولة بنجاح.", "success");
-          refetch(); // Refresh the countries list after deletion
+          refetch();
         } catch (err) {
-          console.error("Failed to delete country:", err);
           Swal.fire("خطأ!", "حدث خطأ أثناء محاولة حذف الدولة.", "error");
         }
       }
     });
   };
+
   useEffect(() => {
-    document.body.classList.remove("sidebar-icon-only"); // Close sidebar on page change
+    document.body.classList.remove("sidebar-icon-only");
   }, []);
+
   return (
     <div>
       <Header />
@@ -106,6 +99,8 @@ const AllStores = () => {
               <i className="fa fa-plus" aria-hidden="true"></i>
             </button>
           </div>
+
+          {/* Popup form */}
           {showPopup && (
             <div className="popup-overlay">
               <div className="popup-content">
@@ -120,26 +115,22 @@ const AllStores = () => {
                 </h4>
                 <AddCountriesForm
                   onSubmit={handleFormSubmit}
-                  initialData={editingCountry} // Pass country data if editing
+                  initialData={editingCountry}
                   isEditMode={editingCountry !== null}
                 />
               </div>
             </div>
           )}
+
+          {/* جدول عرض الاستوري */}
           <div className="row content-wrapper">
             <div className="col-12 grid-margin">
               <div className="card">
                 <div className="p-3">
                   <h3 className="latest_users mt-2 mb-3 text-center">
-                    <i
-                      className="fa fa-angle-double-left"
-                      aria-hidden="true"
-                    ></i>
+                    <i className="fa fa-angle-double-left"></i>
                     كل الاستوري
-                    <i
-                      className="fa fa-angle-double-right"
-                      aria-hidden="true"
-                    ></i>
+                    <i className="fa fa-angle-double-right"></i>
                     <hr />
                   </h3>
                   <div className="table-responsive">
@@ -148,51 +139,100 @@ const AllStores = () => {
                         <tr style={{ fontWeight: "bold" }}>
                           <th>#</th>
                           <th>الاسم</th>
-                          <th>الصورة</th>
+                          <th>الصورة/الفيديو</th>
                           <th>اجراء</th>
                         </tr>
                       </thead>
-
                       <tbody>
-                        {countries?.map((story, index) => (
-                          <tr key={story.id}>
-                            <td>{index + 1}</td>
-                            <td>{story.title}</td>
-                            <td>
-                              <img
-                                src={story.mediaUrl}
-                                alt="story"
-                                style={{
-                                  width: "70px",
-                                  height: "70px",
-                                  objectFit: "cover",
-                                }}
-                              />
-                            </td>
-                            <td>
-                              <button
-                                className="btn text-success"
-                                title="تعديل"
-                                onClick={() => handleEditCountry(story)}
-                              >
-                                <i
-                                  className="fa fa-edit"
-                                  aria-hidden="true"
-                                ></i>
-                              </button>
-                              <button
-                                className="btn text-danger"
-                                onClick={() => handleDeleteCountry(story.id)}
-                                title="حذف"
-                              >
-                                <i
-                                  className="fa fa-trash"
-                                  aria-hidden="true"
-                                ></i>
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
+                        {countries?.map((story, index) => {
+                          const isVideo = story.mediaUrl?.match(
+                            /\.(mp4|mov|avi|webm)$/i
+                          );
+
+                          return (
+                            <tr key={story.id}>
+                              <td>{index + 1}</td>
+                              <td>{story.title}</td>
+                              <td>
+                                {isVideo ? (
+                                  <div>
+                                    <video
+                                      style={{ borderRadius: "50%" }}
+                                      width="70"
+                                      height="70"
+                                      controls
+                                      onLoadedData={() =>
+                                        setVideoLoaded((prev) => ({
+                                          ...prev,
+                                          [story.id]: true,
+                                        }))
+                                      }
+                                    >
+                                      <source
+                                        src={story.mediaUrl}
+                                        type="video/mp4"
+                                      />
+                                      متصفحك لا يدعم تشغيل الفيديو
+                                    </video>
+
+                                    {!videoLoaded[story.id] && (
+                                      <div
+                                        style={{
+                                          width: "100%",
+                                          background: "#ddd",
+                                          height: "4px",
+                                        }}
+                                      >
+                                        <div
+                                          style={{
+                                            width: "100%",
+                                            height: "4px",
+                                            background: "#4caf50",
+                                            animation:
+                                              "loadingAnim 1s infinite linear",
+                                          }}
+                                        />
+                                      </div>
+                                    )}
+                                  </div>
+                                ) : (
+                                  <img
+                                    src={story.mediaUrl}
+                                    alt="story"
+                                    style={{
+                                      width: "70px",
+                                      height: "70px",
+                                      objectFit: "cover",
+                                    }}
+                                  />
+                                )}
+                              </td>
+                              <td>
+                                <button
+                                  className="btn text-success"
+                                  title="تعديل"
+                                  onClick={() => handleEditCountry(story)}
+                                  disabled={isVideo && !videoLoaded[story.id]}
+                                >
+                                  <i
+                                    className="fa fa-edit"
+                                    aria-hidden="true"
+                                  ></i>
+                                </button>
+                                <button
+                                  className="btn text-danger"
+                                  onClick={() => handleDeleteCountry(story.id)}
+                                  title="حذف"
+                                >
+                                  <i
+                                    className="fa fa-trash"
+                                    aria-hidden="true"
+                                  ></i>
+                                </button>
+                              </td>
+                            </tr>
+                          );
+                        })}
                       </tbody>
                     </table>
                   </div>
@@ -200,8 +240,77 @@ const AllStores = () => {
               </div>
             </div>
           </div>
+
+          {/* مودال عرض الفيديو كستوري */}
+          {storyVideo && (
+            <div className="story-modal">
+              <div
+                className="story-backdrop"
+                onClick={() => setStoryVideo(null)}
+              ></div>
+              <div className="story-content">
+                {loadingProgress < 100 && (
+                  <div className="progress-bar">
+                    <div
+                      className="progress-fill"
+                      style={{ width: `${loadingProgress}%` }}
+                    ></div>
+                  </div>
+                )}
+                <video
+                  src={storyVideo}
+                  autoPlay
+                  controls
+                  style={{ maxHeight: "90vh", maxWidth: "90vw" }}
+                  onLoadedData={() => setLoadingProgress(100)}
+                  onProgress={(e) => {
+                    if (e.target.buffered.length > 0) {
+                      const loaded = e.target.buffered.end(0);
+                      const total = e.target.duration;
+                      setLoadingProgress((loaded / total) * 100);
+                    }
+                  }}
+                />
+              </div>
+            </div>
+          )}
         </div>
       </div>
+
+      {/* CSS داخلي سريع */}
+      <style>{`
+        .story-modal {
+          position: fixed;
+          top: 0; left: 0;
+          width: 100%; height: 100%;
+          display: flex; align-items: center; justify-content: center;
+          z-index: 9999;
+        }
+        .story-backdrop {
+          position: absolute;
+          top: 0; left: 0; width: 100%; height: 100%;
+          background: rgba(0,0,0,0.7);
+        }
+        .story-content {
+          position: relative;
+          z-index: 10000;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+        .progress-bar {
+          position: absolute;
+          top: -10px;
+          width: 100%;
+          height: 4px;
+          background: rgba(255,255,255,0.3);
+        }
+        .progress-fill {
+          height: 100%;
+          background: #ffcc00;
+          transition: width 0.2s;
+        }
+      `}</style>
     </div>
   );
 };

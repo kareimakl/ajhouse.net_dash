@@ -17,30 +17,6 @@ export const servicesApi = createApi({
     getServices: builder.query({
       query: () => `/api/products`,
     }),
-    // getServiceById: builder.query({
-    //   query: (id) => `/show-service/${id}`,
-    // }),
-
-    // createService: builder.mutation({
-    //   query: (newService) => ({
-    //     url: "/add-service",
-    //     method: "POST",
-    //     body: newService,
-    //   }),
-    // }),
-    // updateService: builder.mutation({
-    //   query: ({ id, updatedService }) => ({
-    //     url: `/update-service/${id}`,
-    //     method: "POST",
-    //     body: updatedService,
-    //   }),
-    // }),
-    // deleteService: builder.mutation({
-    //   query: (id) => ({
-    //     url: `/delete-service/${id}`,
-    //     method: "DELETE",
-    //   }),
-    // }),
   }),
 });
 
