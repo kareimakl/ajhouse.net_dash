@@ -95,43 +95,28 @@ const Bookings = () => {
                         <tbody>
                           {bookings?.map((booking, index) => (
                             <tr key={booking.id}>
-                              <td>{index + 1} </td>{" "}
-                              {/* Tracking ID as the user ID */}
-                              <td>{booking.client_name}</td>
-                              <td>{booking.service.title}</td>
-                              {/* <td>
-                                {booking.payment_status === "paid" ? (
-                                  <span className="badge badge-success">
-                                    تم الدفع
-                                  </span>
-                                ) : (
-                                  <span className="badge badge-warning">
-                                    انتظار
-                                  </span>
-                                )}
-                              </td> */}
+                              <td>{index + 1}</td>
+                              <td>{booking.affiliate.fullName}</td>{" "}
+                              {/* اسم المسوق */}
+                              <td>{booking.code}</td> {/* الكوبون */}
                               <td>
-                                {booking.booking_status === "approved" ? (
+                                {booking.isActive ? (
                                   <span className="badge badge-success">
                                     مفعل
                                   </span>
-                                ) : booking.booking_status === "rejected" ? (
-                                  <span className="badge badge-danger">
-                                    مرفوضة
-                                  </span>
                                 ) : (
-                                  <span className="badge badge-warning">
-                                    انتظار
+                                  <span className="badge badge-danger">
+                                    معطل
                                   </span>
                                 )}
                               </td>
                               <td>
-                                {new Date(booking.created_at).toLocaleString(
+                                {new Date(booking.createdAt).toLocaleString(
                                   "en"
                                 )}
                               </td>
                               <td>
-                                <button
+                                {/* <button
                                   className="btn text-success"
                                   title="تعديل"
                                   onClick={() =>
@@ -142,7 +127,7 @@ const Bookings = () => {
                                     className="fa fa-edit"
                                     aria-hidden="true"
                                   ></i>
-                                </button>
+                                </button> */}
                                 <button
                                   className="btn text-danger"
                                   onClick={() => handleDelete(booking.id)}

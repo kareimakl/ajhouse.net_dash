@@ -73,8 +73,8 @@ const AllUsers = () => {
                                 >
                                   {user.role === "admin"
                                     ? "أدمن"
-                                    : user.role === "teacher"
-                                    ? "معلم"
+                                    : user.role === "affiliate"
+                                    ? "مسوق"
                                     : "مستخدم"}
                                 </span>
                               </td>
@@ -90,6 +90,7 @@ const AllUsers = () => {
                                   {user.isActive ? "نشط" : "غير نشط"}
                                 </span>
                               </td>
+
                               <td>
                                 <button
                                   onClick={() =>

@@ -19,7 +19,7 @@ const Bookings = () => {
   const [deleteBooking] = useDeleteBookingMutation();
   const navigate = useNavigate();
   useEffect(() => {
-    document.body.classList.remove("sidebar-icon-only"); // Close sidebar on page change
+    document.body.classList.remove("sidebar-icon-only"); 
   }, []);
   useEffect(() => {
     refetch();

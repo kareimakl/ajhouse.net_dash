@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 // Define the base URL of your Laravel API
-const baseUrl = "https://api-gateway.camion-app.com";
+const baseUrl = "https://api-gateway.camion-app.com/affiliates";
 
 export const bookingsApi = createApi({
   reducerPath: "bookingsApi",
@@ -18,7 +18,7 @@ export const bookingsApi = createApi({
   endpoints: (builder) => ({
     // Get all bookings
     getBookings: builder.query({
-      query: () => "/orders/user",
+      query: () => "/requests/pending",
     }),
     // Get a booking by ID
     getBookingById: builder.query({
@@ -27,7 +27,7 @@ export const bookingsApi = createApi({
     // Create a new booking
     createBooking: builder.mutation({
       query: (newBooking) => ({
-        url: "/add-booking",
+        url: "/requests/review",
         method: "POST",
         body: newBooking,
       }),
@@ -43,7 +43,7 @@ export const bookingsApi = createApi({
     // Delete a booking
     deleteBooking: builder.mutation({
       query: (id) => ({
-        url: `/delete-booking/${id}`,
+        url: `/${id}`,
         method: "DELETE",
       }),
     }),

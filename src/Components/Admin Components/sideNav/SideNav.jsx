@@ -1,8 +1,7 @@
-import { Link, NavLink} from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import "./sideNav.css";
 
 const SideNav = ({ isSidebarOpen }) => {
-
   const handleLogout = () => {
     localStorage.clear();
   };
@@ -132,7 +131,7 @@ const SideNav = ({ isSidebarOpen }) => {
                     <span className="dot me-2">•</span> كل كوبون
                   </NavLink>
                 </li>
-                <li className="nav-item">
+                {/* <li className="nav-item">
                   <NavLink
                     to="/admin/active-coupons"
                     className={({ isActive }) =>
@@ -141,8 +140,8 @@ const SideNav = ({ isSidebarOpen }) => {
                   >
                     <span className="dot me-2">•</span> المفعلة
                   </NavLink>
-                </li>
-                <li className="nav-item">
+                </li> */}
+                {/* <li className="nav-item">
                   <NavLink
                     to="/admin/pending-coupons"
                     className={({ isActive }) =>
@@ -151,8 +150,8 @@ const SideNav = ({ isSidebarOpen }) => {
                   >
                     <span className="dot me-2">•</span> بانتظار الموافقة
                   </NavLink>
-                </li>
-                <li className="nav-item">
+                </li> */}
+                {/* <li className="nav-item">
                   <NavLink
                     to="/admin/rejected-coupons"
                     className={({ isActive }) =>
@@ -161,7 +160,7 @@ const SideNav = ({ isSidebarOpen }) => {
                   >
                     <span className="dot me-2">•</span> المرفوضة
                   </NavLink>
-                </li>
+                </li> */}
                 <li className="nav-item">
                   <NavLink
                     to="/admin/add-coupon"
@@ -181,7 +180,7 @@ const SideNav = ({ isSidebarOpen }) => {
                 </li>
                 <li className="nav-item">
                   <NavLink
-                    to="/admin/active-affiliates"
+                    to="/admin/active-affiliate"
                     className={({ isActive }) =>
                       `nav-link ${isActive ? "active text-danger" : ""}`
                     }
@@ -199,7 +198,7 @@ const SideNav = ({ isSidebarOpen }) => {
                     <span className="dot me-2">•</span> بانتظار الموافقة
                   </NavLink>
                 </li>
-                <li className="nav-item">
+                {/* <li className="nav-item">
                   <NavLink
                     to="/admin/rejected-affiliates"
                     className={({ isActive }) =>
@@ -208,8 +207,8 @@ const SideNav = ({ isSidebarOpen }) => {
                   >
                     <span className="dot me-2">•</span> المسوقين المرفوضين
                   </NavLink>
-                </li>
-                <li className="nav-item">
+                </li> */}
+                {/* <li className="nav-item">
                   <NavLink
                     to="/admin/add-affiliate"
                     className={({ isActive }) =>
@@ -218,7 +217,7 @@ const SideNav = ({ isSidebarOpen }) => {
                   >
                     <span className="dot me-2">•</span> إضافة مسوق
                   </NavLink>
-                </li>
+                </li> */}
               </ul>
             </div>
           </li>
@@ -231,20 +230,49 @@ const SideNav = ({ isSidebarOpen }) => {
           </li>
 
           {/* Appearance */}
+
           <li className="nav-item">
-            <Link to="/admin/all-stores" className="nav-link">
-              <i className="fa fa-paint-brush" aria-hidden="true"></i>
-              <span className="menu-title fw-bold">المظهر</span>
+            <Link
+              className="nav-link justify-content-between"
+              data-bs-toggle="collapse"
+              to="#styles"
+              aria-expanded="false"
+              aria-controls="users"
+            >
+              <div>
+                <i className="fa fa-paint-brush" aria-hidden="true"></i>
+                <span className="menu-title fw-bold">المظهر</span>
+              </div>
+              <i className="menu-arrow me-3" />
             </Link>
+            <div className="collapse" id="styles">
+              <ul className="nav flex-column sub-menu">
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/admin/all-stores">
+                    الاستوري
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/admin/all-sliders">
+                    اسلايدر
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/admin/all-offers">
+                    الاوفر
+                  </NavLink>
+                </li>
+              </ul>
+            </div>
           </li>
 
           {/* Orders */}
-          <li className="nav-item">
+          {/* <li className="nav-item">
             <Link to="/admin/orders" className="nav-link">
               <i className="fa fa-envelope" aria-hidden="true"></i>
               <span className="menu-title fw-bold">الطلبات</span>
             </Link>
-          </li>
+          </li> */}
 
           {/* Logout */}
           <li className="nav-item" onClick={handleLogout}>

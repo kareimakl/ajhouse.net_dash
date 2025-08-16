@@ -1,0 +1,102 @@
+/* App.css */
+body {
+    font-family: 'Arial', sans-serif;
+  }
+  
+  /* Popup overlay */
+  .popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #b3261e; /* Semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: all 0.5s ease;
+  }
+  
+  /* Popup content */
+  .popup-content {
+    background: #fff;
+    padding: 30px;
+    width: 500px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    position: relative;
+    /* transition: all 0.5s ease-in-out; */
+    transform: scale(0);
+    opacity: 0;
+    animation: popup 0.5s ease-in-out forwards;
+  }
+  @keyframes popup {
+    0% {
+      transform: scale(0);
+      opacity: 0;
+    }
+    100% {  
+      transform: scale(1);
+      opacity: 1;
+    }
+    
+  }
+  
+  .popup-content h4 {
+    text-align: center;
+  }
+  
+  .popup-content p {
+    text-align: center;
+    color: #666;
+    margin-bottom: 20px;
+
+  }
+  
+  .popup-content .forms-sample .form-group {
+    margin-bottom: 15px;
+  }
+  
+  /* Form input */
+  .popup-content .form-control {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-top: 5px;
+    font-size: 14px;
+  }
+  
+
+  
+  /* Close button styling */
+  .popup-content .close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #aaa;
+  }
+  
+  .popup-content .close-btn:hover {
+    color: #333;
+  }
+
+.add-country .add-btn{
+    position: fixed;
+    bottom: 7%;
+    left: 4%;
+    border-radius: 20px;
+
+    z-index: 999;
+  }
+
+
+  .add-country .add-btn{
+
+        background: #b3261e !important; 
+  }

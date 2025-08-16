@@ -5,6 +5,8 @@ import Protected from "../Components/Common/Protected";
 import AddUser from "../Pages/Dashboard Pages/Add User/AddUser";
 import AllUsers from "./Dashboard Pages/all users/AllUsers";
 import AllStores from "./Dashboard Pages/all_stores/AllStores";
+import AllOffers from "./Dashboard Pages/all_offers/AllOffers";
+import AllSliders from "./Dashboard Pages/all_sliders/AllSliders";
 import Services from "./Dashboard Pages/services/Services";
 import AddService from "./Dashboard Pages/services/AddService";
 import Messages from "./Dashboard Pages/messages/Messages";
@@ -83,6 +85,22 @@ const pages = () => {
             element={
               <ProtectedRoute>
                 <AllStores />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/all-offers"
+            element={
+              <ProtectedRoute>
+                <AllOffers />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/all-sliders"
+            element={
+              <ProtectedRoute>
+                <AllSliders />
               </ProtectedRoute>
             }
           />
@@ -207,7 +225,7 @@ const pages = () => {
             }
           />
           <Route
-            path="/admin/pending-affiliate"
+            path="/admin/pending-affiliates"
             element={
               <ProtectedRoute>
                 <PendingAffiliates />

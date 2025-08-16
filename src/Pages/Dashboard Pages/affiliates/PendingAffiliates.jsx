@@ -1,31 +1,23 @@
-import  { useEffect } from "react";
+import { useEffect } from "react";
 import Header from "../../../Components/Admin Components/header/Header";
 import SideNav from "../../../Components/Admin Components/sideNav/SideNav";
-
 import PageHeader from "../../../Components/Common/page header/PageHeader";
 import {
-  useDeleteBookingMutation,
   useGetBookingsQuery,
+  useDeleteBookingMutation,
+  useCreateBookingMutation,
 } from "../../../api/bookingSlice";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
 
 const PendingCoupons = () => {
-  const {
-    data: bookings,
-    isLoading,
-
-    error,
-    refetch,
-  } = useGetBookingsQuery();
+  const { data: users = [], isLoading, error, refetch } = useGetBookingsQuery();
   const [deleteBooking] = useDeleteBookingMutation();
-  const navigate = useNavigate();
+  const [updateStatus] = useCreateBookingMutation();
+
   useEffect(() => {
-    document.body.classList.remove("sidebar-icon-only"); // Close sidebar on page change
+    document.body.classList.remove("sidebar-icon-only");
   }, []);
-  useEffect(() => {
-    refetch();
-  }, [refetch]);
+
   const handleDelete = async (id) => {
     Swal.fire({
       title: "هل أنت متأكد؟",
@@ -49,6 +41,34 @@ const PendingCoupons = () => {
     });
   };
 
+  const handleApprove = async (user) => {
+    const { value: status } = await Swal.fire({
+      title: "تغيير الحالة",
+      input: "select",
+      inputOptions: {
+        pending: "انتظار",
+        approved: "مفعل",
+      },
+      inputValue: user.status,
+      showCancelButton: true,
+      confirmButtonText: "تحديث",
+      cancelButtonText: "إلغاء",
+    });
+
+    if (status) {
+      try {
+        await updateStatus({
+          affiliateId: user.id,
+          status: status,
+        }).unwrap();
+        Swal.fire("تم التحديث!", "تم تغيير حالة المسوق.", "success");
+        refetch();
+      } catch (err) {
+        Swal.fire("خطأ!", "حدث خطأ أثناء التحديث.", "error");
+      }
+    }
+  };
+
   return (
     <div>
       <Header />
@@ -56,113 +76,73 @@ const PendingCoupons = () => {
         <SideNav />
         <div className="add_user_container">
           <div style={{ marginTop: "30px" }}>
-            <PageHeader name=" الطلبات" icon="fa fa-cogs" />
+            <PageHeader name="الطلبات" icon="fa fa-cogs" />
           </div>
           <div className="row content-wrapper">
             <div className="col-12 grid-margin">
-              <div className="card">
-                <div className="p-3">
-                  <h3 className="latest_users mt-2 mb-3 text-center">
-                    <i
-                      className="fa fa-angle-double-left"
-                      aria-hidden="true"
-                    ></i>
-                    كل الطلبات
-                    <i
-                      className="fa fa-angle-double-right"
-                      aria-hidden="true"
-                    ></i>
-                    <hr />
-                  </h3>
-                  <div className="table-responsive">
-                    {isLoading ? (
-                      <div className="center-loader">
-                        <div class="loader"></div>
-                      </div>
-                    ) : error ? (
-                      <div>Error loading users</div> // Display error message if there is an error
-                    ) : (
-                      <table className="table text-center table-hover">
-                        <thead className="table-dark">
-                          <tr style={{ fontWeight: "bold" }}>
-                            <th># </th>
-                            <th> اسم المسوق </th>
-                            <th>الكوبون</th>
-                            {/* <th>حالة الدفع</th> */}
-                            <th>الحالة</th>
-                            <th>تاريخ النشاء</th>
-                            <th> اجراء </th>
+              <div className="card p-3">
+                {isLoading ? (
+                  <div className="text-center">جارٍ التحميل...</div>
+                ) : error ? (
+                  <div className="text-danger">فشل في تحميل طلبات </div>
+                ) : (
+                  <table className="table text-center table-hover">
+                    <thead className="table-dark">
+                      <tr style={{ fontWeight: "bold" }}>
+                        <th>#</th>
+                        <th>الاسم الكامل</th>
+                        <th>الجنس</th>
+                        <th>الجنسية</th>
+                        <th>الحالة</th>
+                        <th>إجراء</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {users.length === 0 ? (
+                        <tr>
+                          <td colSpan="6" className="text-center text-muted">
+                            لا يوجد بيانات
+                          </td>
+                        </tr>
+                      ) : (
+                        users.map((user, index) => (
+                          <tr key={user.id}>
+                            <td>{index + 1}</td>
+                            <td>{user.fullName}</td>
+                            <td>{user.gender}</td>
+                            <td>{user.nationality}</td>
+                            <td>
+                              <span
+                                className={`badge ${
+                                  user.status === "approved"
+                                    ? "badge-gradient-success"
+                                    : user.status === "pending"
+                                    ? "badge-gradient-warning"
+                                    : "badge-gradient-danger"
+                                }`}
+                              >
+                                {user.status === "approved"
+                                  ? "مفعل"
+                                  : user.status === "pending"
+                                  ? "انتظار"
+                                  : "مرفوض"}
+                              </span>
+                            </td>
+                            <td>
+                              <button
+                                className="btn text-success"
+                                onClick={() => handleApprove(user)}
+                                title="تغيير الحالة"
+                              >
+                                <i className="fa fa-edit"></i>
+                              </button>
+                            </td>
                           </tr>
-                        </thead>
-                        <tbody>
-                          {bookings?.map((booking, index) => (
-                            <tr key={booking.id}>
-                              <td>{index + 1} </td>{" "}
-                              {/* Tracking ID as the user ID */}
-                              <td>{booking.client_name}</td>
-                              <td>{booking.service.title}</td>
-                              {/* <td>
-                                {booking.payment_status === "paid" ? (
-                                  <span className="badge badge-success">
-                                    تم الدفع
-                                  </span>
-                                ) : (
-                                  <span className="badge badge-warning">
-                                    انتظار
-                                  </span>
-                                )}
-                              </td> */}
-                              <td>
-                                {booking.booking_status === "approved" ? (
-                                  <span className="badge badge-success">
-                                    مفعل
-                                  </span>
-                                ) : booking.booking_status === "rejected" ? (
-                                  <span className="badge badge-danger">
-                                    مرفوضة
-                                  </span>
-                                ) : (
-                                  <span className="badge badge-warning">
-                                    انتظار
-                                  </span>
-                                )}
-                              </td>
-                              <td>
-                                {new Date(booking.created_at).toLocaleString(
-                                  "en"
-                                )}
-                              </td>
-                              <td>
-                                <button
-                                  className="btn text-success"
-                                  title="تعديل"
-                                  onClick={() =>
-                                    navigate(`/admin/edit-coupon/${booking.id}`)
-                                  }
-                                >
-                                  <i
-                                    className="fa fa-edit"
-                                    aria-hidden="true"
-                                  ></i>
-                                </button>
-                                <button
-                                  className="btn text-danger"
-                                  onClick={() => handleDelete(booking.id)}
-                                  title="حذف"
-                                >
-                                  <i
-                                    className="fa fa-trash"
-                                    aria-hidden="true"
-                                  ></i>
-                                </button>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    )}
-                  </div>
-                </div>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                )}
               </div>
             </div>
           </div>

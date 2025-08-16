@@ -2,7 +2,9 @@ import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { apiService } from "../api/userSlice";
 import { countriesApi } from "../api/stories";
+import { offersApi } from "../api/offers";
 import servicesApi from "../api/servicesSlice";
+import { slidersApi } from "../api/sliders";
 import { messageApi } from "../api/messageSlice";
 import { transactionsApi } from "../api/transactionsSlice";
 import { bookingsApi } from "../api/bookingSlice";
@@ -14,6 +16,8 @@ export const store = configureStore({
   reducer: {
     [apiService.reducerPath]: apiService.reducer,
     [countriesApi.reducerPath]: countriesApi.reducer,
+    [offersApi.reducerPath]: offersApi.reducer,
+    [slidersApi.reducerPath]: slidersApi.reducer,
     [servicesApi.reducerPath]: servicesApi.reducer,
     [messageApi.reducerPath]: messageApi.reducer,
     [transactionsApi.reducerPath]: transactionsApi.reducer,
@@ -26,6 +30,8 @@ export const store = configureStore({
     getDefaultMiddleware().concat(
       apiService.middleware,
       countriesApi.middleware,
+      offersApi.middleware,
+      slidersApi.middleware,
       servicesApi.middleware,
       messageApi.middleware,
       transactionsApi.middleware,
