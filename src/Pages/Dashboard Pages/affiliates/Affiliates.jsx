@@ -54,7 +54,7 @@ const Bookings = () => {
         <SideNav />
         <div className="add_user_container">
           <div style={{ marginTop: "30px" }}>
-            <PageHeader name=" الطلبات" icon="fa fa-cogs" />
+            <PageHeader name=" الكوبونات" icon="fa fa-cogs" />
           </div>
           <div className="row content-wrapper">
             <div className="col-12 grid-margin">
@@ -65,7 +65,7 @@ const Bookings = () => {
                       className="fa fa-angle-double-left"
                       aria-hidden="true"
                     ></i>
-                    كل الطلبات
+                    كل الكوبونات
                     <i
                       className="fa fa-angle-double-right"
                       aria-hidden="true"

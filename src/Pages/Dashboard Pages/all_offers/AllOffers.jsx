@@ -24,20 +24,18 @@ const AllOffers = () => {
   const handleFormSubmit = async (formData) => {
     try {
       if (editingOffer) {
-        // تعديل → JSON
         const dataToSend = {
           title: formData.title,
           description: formData.description,
           discount: formData.discount,
-          imageUrl: formData.imageUrl, // رابط الصورة موجود مسبقًا
+          imageUrl: formData.imageUrl, 
         };
 
         await updateOffer({
-          id: editingOffer.id,      // id في الرابط
-          updatedCountry: dataToSend
+          id: editingOffer.id, 
+          updatedCountry: dataToSend,
         }).unwrap();
       } else {
-        // إنشاء جديد → FormData
         const dataToSend = new FormData();
         dataToSend.append("title", formData.title);
         dataToSend.append("description", formData.description);
@@ -133,7 +131,6 @@ const AllOffers = () => {
             </div>
           )}
 
-          {/* جدول عرض العروض */}
           <div className="row content-wrapper">
             <div className="col-12 grid-margin">
               <div className="card p-3">
@@ -149,7 +146,7 @@ const AllOffers = () => {
                       <tr style={{ fontWeight: "bold" }}>
                         <th>#</th>
                         <th>العنوان</th>
-                        <th>الوصف</th>
+                        <th>لنك</th>
                         <th>الخصم</th>
                         <th>الصورة</th>
                         <th>اجراء</th>

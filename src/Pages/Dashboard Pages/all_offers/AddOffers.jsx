@@ -5,7 +5,7 @@ const AddOffersForm = ({ onSubmit, initialData, isEdit }) => {
     title: initialData?.title || "",
     description: initialData?.description || "",
     discount: initialData?.discount || "",
-    image: null, 
+    image: null,
     imageUrl: initialData?.imageUrl || "",
   });
 
@@ -51,11 +51,11 @@ const AddOffersForm = ({ onSubmit, initialData, isEdit }) => {
       </div>
 
       <div className="form-group">
-        <label>الوصف</label>
-        <textarea
+        <label>لنك</label>
+        <input
+          type="text"
           name="description"
           className="form-control"
-          rows={3}
           value={formData.description}
           onChange={handleChange}
         />

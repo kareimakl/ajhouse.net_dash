@@ -55,7 +55,7 @@ const Bookings = () => {
         <SideNav />
         <div className="add_user_container">
           <div style={{ marginTop: "30px" }}>
-            <PageHeader name=" الطلبات" icon="fa fa-cogs" />
+            <PageHeader name=" الكوبونات" icon="fa fa-cogs" />
           </div>
           <div className="row content-wrapper">
             <div className="col-12 grid-margin">
@@ -66,7 +66,7 @@ const Bookings = () => {
                       className="fa fa-angle-double-left"
                       aria-hidden="true"
                     ></i>
-                    كل الطلبات
+                    كل الكوبونات
                     <i
                       className="fa fa-angle-double-right"
                       aria-hidden="true"
@@ -87,8 +87,9 @@ const Bookings = () => {
                             <th># </th>
                             <th> اسم المسوق </th>
                             <th>الكوبون</th>
-                            <th>الحالة</th>
+                            <th>نسبة الخصم</th>
                             <th>تاريخ النشاء</th>
+                            <th>الحالة</th>
                             <th> اجراء </th>
                           </tr>
                         </thead>
@@ -97,8 +98,13 @@ const Bookings = () => {
                             <tr key={booking.id}>
                               <td>{index + 1}</td>
                               <td>{booking.affiliate.fullName}</td>{" "}
-                              {/* اسم المسوق */}
-                              <td>{booking.code}</td> {/* الكوبون */}
+                              <td>{booking.code}</td>
+                              <td>{booking.discountPercentage} %</td>
+                              <td>
+                                {new Date(booking.createdAt).toLocaleString(
+                                  "en"
+                                )}
+                              </td>
                               <td>
                                 {booking.isActive ? (
                                   <span className="badge badge-success">
@@ -108,11 +114,6 @@ const Bookings = () => {
                                   <span className="badge badge-danger">
                                     معطل
                                   </span>
-                                )}
-                              </td>
-                              <td>
-                                {new Date(booking.createdAt).toLocaleString(
-                                  "en"
                                 )}
                               </td>
                               <td>
