@@ -103,7 +103,7 @@ const AllSliders = () => {
               className="btn add-btn btn-gradient-primary"
               onClick={() => setShowPopup(true)}
             >
-              اضافة اسلايدر  جديد
+              اضافة اسلايدر جديد
               <i className="fa fa-plus ms-2"></i>
             </button>
           </div>
@@ -122,7 +122,9 @@ const AllSliders = () => {
                   &times;
                 </button>
                 <h4 className="card-title mb-4">
-                  {editingOffer ? "تعديل الاسلايدر " : "نموذج إضافة اسلايدر  جديد"}
+                  {editingOffer
+                    ? "تعديل الاسلايدر "
+                    : "نموذج إضافة اسلايدر  جديد"}
                 </h4>
                 <AddOffersForm
                   onSubmit={handleFormSubmit}
@@ -139,7 +141,7 @@ const AllSliders = () => {
               <div className="card p-3">
                 <h3 className="latest_users mt-2 mb-3 text-center">
                   <i className="fa fa-angle-double-left"></i>
-                  كل اسلايدر 
+                  كل اسلايدر
                   <i className="fa fa-angle-double-right"></i>
                   <hr />
                 </h3>
@@ -149,7 +151,7 @@ const AllSliders = () => {
                       <tr style={{ fontWeight: "bold" }}>
                         <th>#</th>
                         <th>العنوان</th>
-                        <th>الوصف</th>
+                        <th>لنك</th>
                         <th>الخصم</th>
                         <th>الصورة</th>
                         <th>اجراء</th>
