@@ -20,7 +20,7 @@ export const countriesApi = createApi({
   endpoints: (builder) => ({
     // Fetch all countries (GET)
     getCountries: builder.query({
-      query: () => "/stories",
+      query: () => "stories/active",
     }),
 
     // Get a single country by ID (GET)
