@@ -267,12 +267,12 @@ const SideNav = ({ isSidebarOpen }) => {
           </li>
 
           {/* Orders */}
-          {/* <li className="nav-item">
+          <li className="nav-item">
             <Link to="/admin/orders" className="nav-link">
               <i className="fa fa-envelope" aria-hidden="true"></i>
               <span className="menu-title fw-bold">الطلبات</span>
             </Link>
-          </li> */}
+          </li>
 
           {/* Logout */}
           <li className="nav-item" onClick={handleLogout}>

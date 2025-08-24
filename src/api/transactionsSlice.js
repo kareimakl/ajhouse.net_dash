@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 // Define the base URL of your Laravel API
-const baseUrl = "https://xealkhalej-backend.alwajez.com/api/user";
+const baseUrl = "https://api-gateway.camion-app.com";
 
 export const transactionsApi = createApi({
   reducerPath: "transactionsApi",
@@ -18,7 +18,7 @@ export const transactionsApi = createApi({
   endpoints: (builder) => ({
     // Get all transactions
     getTransactions: builder.query({
-      query: () => "/transactions",
+      query: () => "/checkout",
     }),
     // Get transaction by ID
     getTransactionById: builder.query({

@@ -2,51 +2,21 @@ import { useEffect } from "react";
 import Header from "../../../Components/Admin Components/header/Header";
 import SideNav from "../../../Components/Admin Components/sideNav/SideNav";
 import PageHeader from "../../../Components/Common/page header/PageHeader";
-import {
-  useDeleteBookingMutation,
-  useGetBookingsQuery,
-} from "../../../api/bookingSlice";
-import Swal from "sweetalert2";
+import { useGetTransactionsQuery } from "../../../api/transactionsSlice";
 import { useNavigate } from "react-router-dom";
 
-const Bookings = () => {
-  const {
-    data: bookings,
-    isLoading,
+const Orders = () => {
+  const { data: orders, isLoading, error, refetch } = useGetTransactionsQuery();
 
-    error,
-    refetch,
-  } = useGetBookingsQuery();
-  const [deleteBooking] = useDeleteBookingMutation();
   const navigate = useNavigate();
+
   useEffect(() => {
-    document.body.classList.remove("sidebar-icon-only"); // Close sidebar on page change
+    document.body.classList.remove("sidebar-icon-only");
   }, []);
+
   useEffect(() => {
     refetch();
   }, [refetch]);
-  const handleDelete = async (id) => {
-    Swal.fire({
-      title: "هل أنت متأكد؟",
-      text: "لن تتمكن من التراجع عن هذا!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "نعم، احذفها!",
-      cancelButtonText: "إلغاء",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          await deleteBooking(id).unwrap();
-          refetch();
-          Swal.fire("تم الحذف!", "تم حذف الحجز بنجاح.", "success");
-        } catch (error) {
-          Swal.fire("خطأ!", "حدث خطأ أثناء محاولة حذف الحجز.", "error");
-        }
-      }
-    });
-  };
 
   return (
     <div>
@@ -55,7 +25,7 @@ const Bookings = () => {
         <SideNav />
         <div className="add_user_container">
           <div style={{ marginTop: "30px" }}>
-            <PageHeader name=" الطلبات" icon="fa fa-cogs" />
+            <PageHeader name="الطلبات" icon="fa fa-cogs" />
           </div>
           <div className="row content-wrapper">
             <div className="col-12 grid-margin">
@@ -76,32 +46,36 @@ const Bookings = () => {
                   <div className="table-responsive">
                     {isLoading ? (
                       <div className="center-loader">
-                        <div class="loader"></div>
+                        <div className="loader"></div>
                       </div>
                     ) : error ? (
-                      <div>""</div> // Display error message if there is an error
+                      <div>خطأ في تحميل الطلبات</div>
                     ) : (
                       <table className="table text-center table-hover">
                         <thead className="table-dark">
                           <tr style={{ fontWeight: "bold" }}>
-                            <th># </th>
-                            <th> اسم العميل </th>
-                            <th>المنتج</th>
+                            <th>#</th>
+                            <th>رقم الطلب</th>
+                            <th>اسم العميل</th>
+                            <th>عدد المنتجات</th>
+                            <th>إجمالي السعر</th>
                             <th>حالة الدفع</th>
-                            <th>حالة </th>
-                            <th>تاريخ الحجز</th>
-                            <th> اجراء </th>
+                            <th>حالة الطلب</th>
+                            <th>تاريخ الإنشاء</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {bookings?.map((booking, index) => (
-                            <tr key={booking.id}>
-                              <td>{index + 1} </td>{" "}
-                              {/* Tracking ID as the user ID */}
-                              <td>{booking.client_name}</td>
-                              <td>{booking.service.title}</td>
+                          {orders?.map((order, index) => (
+                            <tr key={order.id}>
+                              <td>{index + 1}</td>
+                              <td>{order.wcOrderId}</td>
+                              <td>{order.customerName}</td>
+                              <td>{order.itemsCount}</td>
                               <td>
-                                {booking.payment_status === "paid" ? (
+                                {order.total} {order.currency}
+                              </td>
+                              <td>
+                                {order.wcPaymentStatus === "paid" ? (
                                   <span className="badge badge-success">
                                     تم الدفع
                                   </span>
@@ -112,13 +86,13 @@ const Bookings = () => {
                                 )}
                               </td>
                               <td>
-                                {booking.booking_status === "approved" ? (
-                                  <span className="badge badge-success">
-                                    تفعيل
+                                {order.wcOrderStatus === "processing" ? (
+                                  <span className="badge badge-info">
+                                    قيد المعالجة
                                   </span>
-                                ) : booking.booking_status === "rejected" ? (
-                                  <span className="badge badge-danger">
-                                    مرفوضة
+                                ) : order.wcOrderStatus === "completed" ? (
+                                  <span className="badge badge-success">
+                                    مكتمل
                                   </span>
                                 ) : (
                                   <span className="badge badge-warning">
@@ -127,33 +101,9 @@ const Bookings = () => {
                                 )}
                               </td>
                               <td>
-                                {new Date(booking.created_at).toLocaleString(
-                                  "en"
+                                {new Date(order.createdAt).toLocaleString(
+                                  "ar-EG"
                                 )}
-                              </td>
-                              <td>
-                                <button
-                                  className="btn text-success"
-                                  title="تعديل"
-                                  onClick={() =>
-                                    navigate(`/admin/edit-order/${booking.id}`)
-                                  }
-                                >
-                                  <i
-                                    className="fa fa-edit"
-                                    aria-hidden="true"
-                                  ></i>
-                                </button>
-                                <button
-                                  className="btn text-danger"
-                                  onClick={() => handleDelete(booking.id)}
-                                  title="حذف"
-                                >
-                                  <i
-                                    className="fa fa-trash"
-                                    aria-hidden="true"
-                                  ></i>
-                                </button>
                               </td>
                             </tr>
                           ))}
@@ -171,4 +121,4 @@ const Bookings = () => {
   );
 };
 
-export default Bookings;
+export default Orders;
