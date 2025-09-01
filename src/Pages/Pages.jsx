@@ -28,9 +28,7 @@ import Transactions from "./Dashboard Pages/transactions/Transactions";
 import ProtectedRoute from "../Components/protectedRoute/ProtectedRoute";
 import EditService from "./Dashboard Pages/services/EditService";
 import EditOrders from "./Dashboard Pages/orders/EditOrder";
-import Faqs from "./Dashboard Pages/faqs/Faqs";
-import AddFaq from "./Dashboard Pages/faqs/AddFaq";
-import EditFaq from "./Dashboard Pages/faqs/EditFaq";
+import Logo from "./Dashboard Pages/logo/Logo";
 const pages = () => {
   return (
     <div className="pages">
@@ -104,6 +102,16 @@ const pages = () => {
               </ProtectedRoute>
             }
           />
+
+          <Route
+            path="/admin/logo"
+            element={
+              <ProtectedRoute>
+                <Logo />
+              </ProtectedRoute>
+            }
+          />
+
           <Route
             path="/admin/services"
             element={
@@ -262,30 +270,6 @@ const pages = () => {
             element={
               <ProtectedRoute>
                 <Transactions />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/faqs"
-            element={
-              <ProtectedRoute>
-                <Faqs />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/add-faq"
-            element={
-              <ProtectedRoute>
-                <AddFaq />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/edit-faq/:id"
-            element={
-              <ProtectedRoute>
-                <EditFaq />
               </ProtectedRoute>
             }
           />

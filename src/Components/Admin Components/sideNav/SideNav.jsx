@@ -1,7 +1,8 @@
 import { Link, NavLink } from "react-router-dom";
 import "./sideNav.css";
-
+import { useCreateFaqMutation, useGetFaqsQuery } from "../../../api/logo";
 const SideNav = ({ isSidebarOpen }) => {
+  const { data: logo, refetch } = useGetFaqsQuery();
   const handleLogout = () => {
     localStorage.clear();
   };
@@ -18,8 +19,8 @@ const SideNav = ({ isSidebarOpen }) => {
             <NavLink className="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start">
               <Link className="navbar-brand brand-logo" to="#">
                 <img
-                  src="/assets/images/logo-camion.png"
-                  alt="logo"
+                  src={`https://api-gateway.camion-app.com${logo?.path}`}
+                  alt="Company Logo"
                   style={{
                     width: "100%",
                     margin: "10px auto",
@@ -260,6 +261,11 @@ const SideNav = ({ isSidebarOpen }) => {
                 <li className="nav-item">
                   <NavLink className="nav-link" to="/admin/all-offers">
                     الاوفر
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/admin/logo">
+                    اللوجو
                   </NavLink>
                 </li>
               </ul>

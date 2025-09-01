@@ -1,104 +1,104 @@
 import React from "react";
-import "./mainView.css";
-import StatisticalCards from "../Statistical Cards/StatisticalCards";
-import PageHeader from "../../Common/page header/PageHeader";
-const MainView = () => {
+import {
+  useGetOrdersCompletedCountQuery,
+  useGetOrdersPendingCountQuery,
+  useGetAffiliateCouponsCountQuery,
+  useGetUsersCountQuery,
+  useGetOrdersCancelledCountQuery,
+  useGetAffiliatesCountQuery,
+  useGetAffiliatesPendingCountQuery,
+  useGetAffiliatesRejectedCountQuery,
+} from "../../../api/analysis";
+
+const StatisticalCards = () => {
+  const { data: ordersCompleted } = useGetOrdersCompletedCountQuery();
+  const { data: ordersPending } = useGetOrdersPendingCountQuery();
+  const { data: ordersCancle } = useGetOrdersCancelledCountQuery();
+  const { data: affiliateCoupons } = useGetAffiliateCouponsCountQuery();
+  const { data: usersCount } = useGetUsersCountQuery();
+  const { data: affiliatesCount } = useGetAffiliatesCountQuery();
+  const { data: affiliatesPending } = useGetAffiliatesPendingCountQuery();
+  const { data: affiliatesRejected } = useGetAffiliatesRejectedCountQuery();
+
+  const stats = [
+    {
+      title: "الطلبات المكتملة",
+      value: ordersCompleted ?? "0",
+      icon: "fa fa-check-circle",
+      color: "bg-primary",
+    },
+    {
+      title: "الطلبات المعلقة",
+      value: ordersPending ?? "0",
+      icon: "fa fa-hourglass-half",
+      color: "bg-info",
+    },
+    {
+      title: "الطلبات الملغاة",
+      value: ordersCancle ?? "0",
+      icon: "fa fa-times-circle",
+      color: "bg-info",
+    },
+    {
+      title: "كوبونات المسوقين",
+      value: affiliateCoupons ?? "0",
+      icon: "fa fa-ticket",
+      color: "bg-success",
+    },
+    {
+      title: "عدد المستخدمين",
+      value: usersCount ?? "0",
+      icon: "fa fa-users",
+      color: "bg-warning",
+    },
+    {
+      title: "عدد المسوقين",
+      value: affiliatesCount ?? "0",
+      icon: "fa fa-users",
+      color: "bg-danger",
+    },
+    {
+      title: "مسوقين معلقين",
+      value: affiliatesPending ?? "0",
+      icon: "fa fa-hourglass-half",
+      color: "bg-secondary",
+    },
+    {
+      title: "مسوقين مرفوضين",
+      value: affiliatesRejected ?? "0",
+      icon: "fa fa-times-circle",
+      color: "bg-dark",
+    },
+  ];
+
   return (
-    <div className="w-100">
-      {" "}
-      {/* Ensure full width */}
-      <div className="main-panel page-body-wrapper w-100">
-        {/* page header here */}
-        <PageHeader name="الرئيسية" icon="fa fa-home" />
-        {/* page header here */}
-        <div className="content-wrapper w-100">
-          {/* start content */}
-          <StatisticalCards />
-
-          {/* <div className="row my-5">
-              <div className="col-md-8"><LineChart /></div>
-              <div className="col-md-4"><PieChart /></div>
-          </div> */}
-
-          {/* <div className="row">
-          <div className="col-12 grid-margin">
-            <div className="card">
-              <div className="p-3">
-              <h3 className="latest_users mt-2 mb-3 text-center">
-              <i class="fa fa-angle-double-left" aria-hidden="true"></i>
-                    احدث المستخدمين
-              <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-              <hr />
-                    </h3>
-                <div className="table-responsive">
-                  <table className="table">
-                    <thead>
-                      <tr>
-                        <th> الاسم </th>
-                        <th> البريد الالكتروني </th>
-                        <th> الدور </th>
-                        <th> الهاتف </th>
-                        <th> Tracking ID </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>
-                          <img src="assets/images/faces/face1.jpg" className="me-2" alt="image" /> David Grey
-                        </td>
-                        <td> Fund is not recieved </td>
-                        <td>
-                          <label className="badge badge-gradient-success">DONE</label>
-                        </td>
-                        <td> Dec 5, 2017 </td>
-                        <td> WD-12345 </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <img src="assets/images/faces/face2.jpg" className="me-2" alt="image" /> Stella Johnson
-                        </td>
-                        <td> High loading time </td>
-                        <td>
-                          <label className="badge badge-gradient-warning">PROGRESS</label>
-                        </td>
-                        <td> Dec 12, 2017 </td>
-                        <td> WD-12346 </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <img src="assets/images/faces/face3.jpg" className="me-2" alt="image" /> Marina Michel
-                        </td>
-                        <td> Website down for one week </td>
-                        <td>
-                          <label className="badge badge-gradient-info">ON HOLD</label>
-                        </td>
-                        <td> Dec 16, 2017 </td>
-                        <td> WD-12347 </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <img src="assets/images/faces/face4.jpg" className="me-2" alt="image" /> John Doe
-                        </td>
-                        <td> Loosing control on server </td>
-                        <td>
-                          <label className="badge badge-gradient-danger">REJECTED</label>
-                        </td>
-                        <td> Dec 3, 2017 </td>
-                        <td> WD-12348 </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+    <div
+      className="row"
+      style={{
+        marginTop: "5rem",
+        height: "minContent",
+        width: "90%",
+        marginInline: "auto",
+      }}
+    >
+      {stats.map((stat, idx) => (
+        <div className="col-md-3 mb-4" key={idx}>
+          <div className="card border-0 shadow">
+            <div className="card-body text-center">
+              <div
+                className={`rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3 ${stat.color}`}
+                style={{ width: "60px", height: "60px" }}
+              >
+                <i className={`${stat.icon} text-white fs-4`}></i>
               </div>
+              <h6 className="fw-bold text-secondary">{stat.title}</h6>
+              <h3 className="fw-bold">{stat.value}</h3>
             </div>
           </div>
-        </div> */}
-
-          {/* end content */}
         </div>
-      </div>
+      ))}
     </div>
   );
 };
 
-export default MainView;
+export default StatisticalCards;

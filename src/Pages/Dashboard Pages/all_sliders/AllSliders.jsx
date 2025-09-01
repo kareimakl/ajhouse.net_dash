@@ -24,20 +24,19 @@ const AllSliders = () => {
   const handleFormSubmit = async (formData) => {
     try {
       if (editingOffer) {
-        // تعديل → JSON
         const dataToSend = {
           title: formData.title,
           description: formData.description,
           discount: formData.discount,
-          imageUrl: formData.imageUrl, // رابط الصورة موجود مسبقًا
+          imageUrl: formData.imageUrl, 
         };
 
         await updateOffer({
-          id: editingOffer.id, // id في الرابط
+          id: editingOffer.id,
           updatedCountry: dataToSend,
         }).unwrap();
       } else {
-        // إنشاء جديد → FormData
+
         const dataToSend = new FormData();
         dataToSend.append("title", formData.title);
         dataToSend.append("description", formData.description);
