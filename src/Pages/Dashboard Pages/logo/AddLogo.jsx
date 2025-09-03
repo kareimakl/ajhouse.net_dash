@@ -12,7 +12,7 @@ const AddLogo = ({ onSubmit, initialData, isEdit }) => {
     if (initialData) {
       setFormData({
         logo: null,
-        logoUrl: initialData.path ? `${BASE_URL}${initialData.path}` : "",
+        logoUrl: initialData.path ? `${initialData.path}` : "",
       });
     }
   }, [initialData]);
@@ -33,7 +33,7 @@ const AddLogo = ({ onSubmit, initialData, isEdit }) => {
       data.append("logo", formData.logo);
     } else if (isEdit && formData.logoUrl) {
       // لو اللوجو ما اتغيرش نحافظ على الـ path
-      data.append("path", formData.logoUrl.replace(BASE_URL, ""));
+      data.append("path", formData.logoUrl.replace(""));
     }
 
     onSubmit(data);

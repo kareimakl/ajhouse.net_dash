@@ -15,7 +15,7 @@ const Logo = () => {
   const [isSidebarOpen] = useState(true);
   console.log(
     "Full image URL:",
-    `https://api-gateway.camion-app.com${logo?.path}`
+    `${logo?.path}`
   );
 
   const handleFormSubmit = async (formData) => {
@@ -108,7 +108,7 @@ const Logo = () => {
                           <td>1</td>
                           <td>
                             <img
-                              src={`https://api-gateway.camion-app.com${logo?.path}`}
+                              src={`${logo?.path}`}
                               alt="Company Logo"
                               style={{ width: "150px", objectFit: "cover" }}
                             />

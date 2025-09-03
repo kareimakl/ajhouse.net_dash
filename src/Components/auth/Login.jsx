@@ -2,8 +2,10 @@ import { useState } from "react";
 import "./auth.css";
 import { useNavigate } from "react-router-dom";
 import { useLoginUserMutation } from "../../api/userSlice";
+import { useCreateFaqMutation, useGetFaqsQuery } from "../../api/logo";
 
 const Login = () => {
+  const { data: logo, refetch } = useGetFaqsQuery();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
@@ -40,7 +42,7 @@ const Login = () => {
           <form className="form" onSubmit={handleSubmit}>
             <div className="d-flex justify-content-center">
               <img
-                src="/apple-icon.png"
+                src={logo?.path ? `${logo?.path}` : "/logo192.png"}
                 alt="logo"
                 style={{ width: "230px" }}
               />

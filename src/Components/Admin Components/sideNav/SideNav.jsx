@@ -19,7 +19,7 @@ const SideNav = ({ isSidebarOpen }) => {
             <NavLink className="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start">
               <Link className="navbar-brand brand-logo" to="#">
                 <img
-                  src={`https://api-gateway.camion-app.com${logo?.path}`}
+                  src={`${logo?.path}`}
                   alt="Company Logo"
                   style={{
                     width: "100%",
