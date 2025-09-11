@@ -27,7 +27,7 @@ export const couponsAll = createApi({
     // Create a new booking
     createBooking: builder.mutation({
       query: (newBooking) => ({
-        url: "/coupon",
+        url: "/admin/coupon",
         method: "POST",
         body: newBooking,
       }),

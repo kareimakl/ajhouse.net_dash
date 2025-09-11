@@ -39,7 +39,7 @@ export const analysisApi = createApi({
 
     // ✅ Affiliates total count
     getAffiliatesCount: builder.query({
-      query: () => "/affiliates/count/all",
+      query: () => "/affiliates/count/approved",
     }),
 
     // ✅ Affiliates pending count
