@@ -1,60 +1,40 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-// Define the base URL of your Laravel API
-const baseUrl = "https://api-gateway.camion-app.com";
+const baseUrl = "http://localhost:4000/api/v1";
 
 export const transactionsApi = createApi({
   reducerPath: "transactionsApi",
   baseQuery: fetchBaseQuery({
     baseUrl,
-    prepareHeaders: (headers) => {
-      const token = localStorage.getItem("token");
-      if (token) {
-        headers.set("Authorization", `Bearer ${token}`);
-      }
-      return headers;
-    },
   }),
+  tagTypes: ["Contacts"],
   endpoints: (builder) => ({
-    // Get all transactions
-    getTransactions: builder.query({
-      query: () => "/checkout",
+    // ✅ Get all contacts
+    getContacts: builder.query({
+      query: () => "/contacts",
+      providesTags: ["Contacts"],
     }),
-    // Get transaction by ID
-    getTransactionById: builder.query({
-      query: (id) => `/show-transaction/${id}`,
-    }),
-    // Create new transaction
-    createTransaction: builder.mutation({
-      query: (newTransaction) => ({
-        url: "/add-transaction",
-        method: "POST",
-        body: newTransaction,
-      }),
-    }),
-    // Update transaction
-    updateTransaction: builder.mutation({
-      query: ({ id, ...updatedTransaction }) => ({
-        url: `/update-transaction/${id}`,
-        method: "PUT",
-        body: updatedTransaction,
-      }),
-    }),
-    // Delete transaction
-    deleteTransaction: builder.mutation({
+
+    // ✅ Delete contact by ID
+    deleteContact: builder.mutation({
       query: (id) => ({
-        url: `/delete-transaction/${id}`,
+        url: `/contacts/${id}`,
         method: "DELETE",
+      }),
+      invalidatesTags: ["Contacts"],
+    }),
+    updateContactStatus: builder.mutation({
+      query: ({ id, body }) => ({
+        url: `/contacts/${id}/status`,
+        method: "PATCH",
+        body,
       }),
     }),
   }),
 });
 
-// Export hooks for usage in components
 export const {
-  useGetTransactionsQuery,
-  useGetTransactionByIdQuery,
-  useCreateTransactionMutation,
-  useUpdateTransactionMutation,
-  useDeleteTransactionMutation,
+  useGetContactsQuery,
+  useDeleteContactMutation,
+  useUpdateContactStatusMutation,
 } = transactionsApi;

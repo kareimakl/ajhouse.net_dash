@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
+
+// Imports for all APIs
 import { apiService } from "../api/userSlice";
-import { countriesApi } from "../api/stories";
+import { projectsApi } from "../api/projectsApi";
 import { offersApi } from "../api/offers";
 import { analysisApi } from "../api/analysis";
 import servicesApi from "../api/servicesSlice";
-import { slidersApi } from "../api/sliders";
+import { categoriesApi } from "../api/categoriesApi";
 import { messageApi } from "../api/messageSlice";
 import { transactionsApi } from "../api/transactionsSlice";
 import { bookingsApi } from "../api/bookingSlice";
@@ -13,12 +15,13 @@ import { faqApi } from "../api/logo";
 import { usersApi } from "../api/users";
 import { couponsAll } from "../api/coupons";
 
+// ✅ Configure Redux Store
 export const store = configureStore({
   reducer: {
     [apiService.reducerPath]: apiService.reducer,
-    [countriesApi.reducerPath]: countriesApi.reducer,
+    [projectsApi.reducerPath]: projectsApi.reducer,
     [offersApi.reducerPath]: offersApi.reducer,
-    [slidersApi.reducerPath]: slidersApi.reducer,
+    [categoriesApi.reducerPath]: categoriesApi.reducer, // ✅ Added categoriesApi reducer
     [servicesApi.reducerPath]: servicesApi.reducer,
     [messageApi.reducerPath]: messageApi.reducer,
     [transactionsApi.reducerPath]: transactionsApi.reducer,
@@ -31,10 +34,10 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
       apiService.middleware,
-      countriesApi.middleware,
+      projectsApi.middleware,
       offersApi.middleware,
+      categoriesApi.middleware, // ✅ Added categoriesApi middleware
       analysisApi.middleware,
-      slidersApi.middleware,
       servicesApi.middleware,
       messageApi.middleware,
       transactionsApi.middleware,
@@ -45,4 +48,5 @@ export const store = configureStore({
     ),
 });
 
+// ✅ Activate listeners for refetchOnFocus/refetchOnReconnect
 setupListeners(store.dispatch);

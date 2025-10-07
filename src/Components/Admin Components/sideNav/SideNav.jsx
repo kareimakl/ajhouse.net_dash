@@ -19,7 +19,7 @@ const SideNav = ({ isSidebarOpen }) => {
             <NavLink className="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start">
               <Link className="navbar-brand brand-logo" to="#">
                 <img
-                  src={`${logo?.path}`}
+                  src="/assets/images/logotaj.png"
                   alt="Company Logo"
                   style={{
                     width: "100%",
@@ -68,7 +68,7 @@ const SideNav = ({ isSidebarOpen }) => {
           </li>
 
           {/* Users */}
-          <li className="nav-item">
+          {/* <li className="nav-item">
             <Link
               className="nav-link justify-content-between"
               data-bs-toggle="collapse"
@@ -96,139 +96,17 @@ const SideNav = ({ isSidebarOpen }) => {
                 </li>
               </ul>
             </div>
-          </li>
+          </li> */}
 
           {/* Affiliate Marketing */}
-          <li className="nav-item">
-            <Link
-              className="nav-link justify-content-between"
-              data-bs-toggle="collapse"
-              to="#affiliate"
-              aria-expanded="false"
-              aria-controls="affiliate"
-            >
-              <div>
-                <i className="fa fa-random" aria-hidden="true"></i>
-                <span className="menu-title fw-bold">التسويق بالعمولة</span>
-              </div>
-              <i className="menu-arrow me-3" />
-            </Link>
 
-            <div className="collapse" id="affiliate">
-              <ul className="nav flex-column sub-menu">
-                {/* Coupons */}
-                <li className="nav-item">
-                  <span className="menu-sub-title px-3 mt-2 fw-bold text-muted">
-                    الكوبونات
-                  </span>
-                </li>
-                <li className="nav-item">
-                  <NavLink
-                    to="/admin/coupons"
-                    className={({ isActive }) =>
-                      `nav-link ${isActive ? "active text-danger" : ""}`
-                    }
-                  >
-                    <span className="dot me-2">•</span> كل كوبون
-                  </NavLink>
-                </li>
-                {/* <li className="nav-item">
-                  <NavLink
-                    to="/admin/active-coupons"
-                    className={({ isActive }) =>
-                      `nav-link ${isActive ? "active text-danger" : ""}`
-                    }
-                  >
-                    <span className="dot me-2">•</span> المفعلة
-                  </NavLink>
-                </li> */}
-                {/* <li className="nav-item">
-                  <NavLink
-                    to="/admin/pending-coupons"
-                    className={({ isActive }) =>
-                      `nav-link ${isActive ? "active text-danger" : ""}`
-                    }
-                  >
-                    <span className="dot me-2">•</span> بانتظار الموافقة
-                  </NavLink>
-                </li> */}
-                {/* <li className="nav-item">
-                  <NavLink
-                    to="/admin/rejected-coupons"
-                    className={({ isActive }) =>
-                      `nav-link ${isActive ? "active text-danger" : ""}`
-                    }
-                  >
-                    <span className="dot me-2">•</span> المرفوضة
-                  </NavLink>
-                </li> */}
-                <li className="nav-item">
-                  <NavLink
-                    to="/admin/add-coupon"
-                    className={({ isActive }) =>
-                      `nav-link ${isActive ? "active text-danger" : ""}`
-                    }
-                  >
-                    <span className="dot me-2">•</span> إضافة كوبون
-                  </NavLink>
-                </li>
-
-                {/* Affiliates */}
-                <li className="nav-item mt-3">
-                  <span className="menu-sub-title px-3 mt-2 fw-bold text-muted">
-                    المسوقين
-                  </span>
-                </li>
-                <li className="nav-item">
-                  <NavLink
-                    to="/admin/active-affiliate"
-                    className={({ isActive }) =>
-                      `nav-link ${isActive ? "active text-danger" : ""}`
-                    }
-                  >
-                    <span className="dot me-2">•</span> المسوقين الفعليين
-                  </NavLink>
-                </li>
-                <li className="nav-item">
-                  <NavLink
-                    to="/admin/pending-affiliates"
-                    className={({ isActive }) =>
-                      `nav-link ${isActive ? "active text-danger" : ""}`
-                    }
-                  >
-                    <span className="dot me-2">•</span> بانتظار الموافقة
-                  </NavLink>
-                </li>
-                {/* <li className="nav-item">
-                  <NavLink
-                    to="/admin/rejected-affiliates"
-                    className={({ isActive }) =>
-                      `nav-link ${isActive ? "active text-danger" : ""}`
-                    }
-                  >
-                    <span className="dot me-2">•</span> المسوقين المرفوضين
-                  </NavLink>
-                </li> */}
-                {/* <li className="nav-item">
-                  <NavLink
-                    to="/admin/add-affiliate"
-                    className={({ isActive }) =>
-                      `nav-link ${isActive ? "active text-danger" : ""}`
-                    }
-                  >
-                    <span className="dot me-2">•</span> إضافة مسوق
-                  </NavLink>
-                </li> */}
-              </ul>
-            </div>
-          </li>
           {/* Appearance */}
-          <li className="nav-item">
+          {/* <li className="nav-item">
             <Link to="/admin/services" className="nav-link">
               <i className="fa fa-shopping-bag" aria-hidden="true"></i>
               <span className="menu-title fw-bold">المنتجات</span>
             </Link>
-          </li>
+          </li> */}
 
           {/* Appearance */}
 
@@ -242,30 +120,21 @@ const SideNav = ({ isSidebarOpen }) => {
             >
               <div>
                 <i className="fa fa-paint-brush" aria-hidden="true"></i>
-                <span className="menu-title fw-bold">المظهر</span>
+                <span className="menu-title fw-bold">مشروع جديد </span>
               </div>
               <i className="menu-arrow me-3" />
             </Link>
             <div className="collapse" id="styles">
               <ul className="nav flex-column sub-menu">
                 <li className="nav-item">
-                  <NavLink className="nav-link" to="/admin/all-stores">
-                    الاستوري
+                  <NavLink className="nav-link" to="/admin/all_projects">
+                    جميع المشاريع
                   </NavLink>
                 </li>
+
                 <li className="nav-item">
-                  <NavLink className="nav-link" to="/admin/all-sliders">
-                    اسلايدر
-                  </NavLink>
-                </li>
-                <li className="nav-item">
-                  <NavLink className="nav-link" to="/admin/all-offers">
-                    الاوفر
-                  </NavLink>
-                </li>
-                <li className="nav-item">
-                  <NavLink className="nav-link" to="/admin/logo">
-                    اللوجو
+                  <NavLink className="nav-link" to="/admin/all_Categories">
+                    جميع التصنيفات
                   </NavLink>
                 </li>
               </ul>
@@ -274,9 +143,9 @@ const SideNav = ({ isSidebarOpen }) => {
 
           {/* Orders */}
           <li className="nav-item">
-            <Link to="/admin/orders" className="nav-link">
+            <Link to="/admin/contact-form" className="nav-link">
               <i className="fa fa-envelope" aria-hidden="true"></i>
-              <span className="menu-title fw-bold">الطلبات</span>
+              <span className="menu-title fw-bold">طلبات التواصل </span>
             </Link>
           </li>
 

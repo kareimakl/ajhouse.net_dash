@@ -4,14 +4,11 @@ import Dashboard from "./Dashboard Pages/dashboard/Dashboard";
 import Protected from "../Components/Common/Protected";
 import AddUser from "../Pages/Dashboard Pages/Add User/AddUser";
 import AllUsers from "./Dashboard Pages/all users/AllUsers";
-import AllStores from "./Dashboard Pages/all_stores/AllStores";
+import AllStores from "./Dashboard Pages/all_projects/AllStores";
+import AllCategories from "./Dashboard Pages/all_categories/AllSliders";
 import AllOffers from "./Dashboard Pages/all_offers/AllOffers";
-import AllSliders from "./Dashboard Pages/all_sliders/AllSliders";
-import Services from "./Dashboard Pages/services/Services";
-import AddService from "./Dashboard Pages/services/AddService";
 import Messages from "./Dashboard Pages/messages/Messages";
-import Orders from "./Dashboard Pages/orders/Orders";
-import AddOrders from "./Dashboard Pages/orders/AddOrder";
+import Orders from "./Dashboard Pages/contact/contact";
 import Coupons from "./Dashboard Pages/coupons/Coupons";
 import ActiveCoupon from "./Dashboard Pages/coupons/ActiveCoupon";
 import PendingCoupons from "./Dashboard Pages/coupons/PendingCoupons";
@@ -24,10 +21,8 @@ import PendingAffiliates from "./Dashboard Pages/affiliates/PendingAffiliates";
 import RejectedAffiliates from "./Dashboard Pages/affiliates/RejectedAffiliates";
 import AddAffiliates from "./Dashboard Pages/affiliates/AddAffiliates";
 import EditAffiliates from "./Dashboard Pages/affiliates/EditAffiliates";
-import Transactions from "./Dashboard Pages/transactions/Transactions";
 import ProtectedRoute from "../Components/protectedRoute/ProtectedRoute";
-import EditService from "./Dashboard Pages/services/EditService";
-import EditOrders from "./Dashboard Pages/orders/EditOrder";
+
 import Logo from "./Dashboard Pages/logo/Logo";
 const pages = () => {
   return (
@@ -51,16 +46,6 @@ const pages = () => {
               </ProtectedRoute>
             }
           />
-
-          {/* <Route
-            path="/auth/verify"
-            element={ 
-              <ProtectedRoute>
-                <Verify />
-              </ProtectedRoute>
-            }
-          /> */}
-
           <Route
             path="/admin/add-user"
             element={
@@ -69,7 +54,6 @@ const pages = () => {
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/admin/all-users"
             element={
@@ -79,10 +63,18 @@ const pages = () => {
             }
           />
           <Route
-            path="/admin/all-stores"
+            path="/admin/all_projects"
             element={
               <ProtectedRoute>
                 <AllStores />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/all_categories"
+            element={
+              <ProtectedRoute>
+                <AllCategories />
               </ProtectedRoute>
             }
           />
@@ -95,44 +87,10 @@ const pages = () => {
             }
           />
           <Route
-            path="/admin/all-sliders"
-            element={
-              <ProtectedRoute>
-                <AllSliders />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
             path="/admin/logo"
             element={
               <ProtectedRoute>
                 <Logo />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/admin/services"
-            element={
-              <ProtectedRoute>
-                <Services />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/add-service"
-            element={
-              <ProtectedRoute>
-                <AddService />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/edit-service/:id"
-            element={
-              <ProtectedRoute>
-                <EditService />
               </ProtectedRoute>
             }
           />
@@ -145,7 +103,7 @@ const pages = () => {
             }
           />
           <Route
-            path="/admin/orders"
+            path="/admin/contact-form"
             element={
               <ProtectedRoute>
                 <Orders />
@@ -245,31 +203,6 @@ const pages = () => {
             element={
               <ProtectedRoute>
                 <RejectedAffiliates />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/admin/add-order"
-            element={
-              <ProtectedRoute>
-                <AddOrders />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/edit-order/:id"
-            element={
-              <ProtectedRoute>
-                <EditOrders />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/transactions"
-            element={
-              <ProtectedRoute>
-                <Transactions />
               </ProtectedRoute>
             }
           />

@@ -1,73 +1,38 @@
 import React from "react";
-import {
-  useGetOrdersCompletedCountQuery,
-  useGetOrdersPendingCountQuery,
-  useGetAffiliateCouponsCountQuery,
-  useGetUsersCountQuery,
-  useGetOrdersCancelledCountQuery,
-  useGetAffiliatesCountQuery,
-  useGetAffiliatesPendingCountQuery,
-  useGetAffiliatesRejectedCountQuery,
-} from "../../../api/analysis";
+import { useGetProjectsQuery } from "../../../api/projectsApi";
+import { useGetContactsQuery } from "../../../api/transactionsSlice"; // أو الملف اللي فيه الـ contacts
+import { useGetCategoriesQuery } from "../../../api/categoriesApi"; // تأكد من اسم الملف الصحيح
 
 const StatisticalCards = () => {
-  const { data: ordersCompleted } = useGetOrdersCompletedCountQuery();
-  const { data: ordersPending } = useGetOrdersPendingCountQuery();
-  const { data: ordersCancle } = useGetOrdersCancelledCountQuery();
-  const { data: affiliateCoupons } = useGetAffiliateCouponsCountQuery();
-  const { data: usersCount } = useGetUsersCountQuery();
-  const { data: affiliatesCount } = useGetAffiliatesCountQuery();
-  const { data: affiliatesPending } = useGetAffiliatesPendingCountQuery();
-  const { data: affiliatesRejected } = useGetAffiliatesRejectedCountQuery();
+  // جلب البيانات من الـ APIs
+  const { data: projectsData } = useGetProjectsQuery("ar");
+  const { data: contactsData } = useGetContactsQuery();
+  const { data: categoriesData } = useGetCategoriesQuery("ar");
 
+  // استخراج الأرقام
+  const projectsCount = projectsData?.data?.length ?? 0;
+  const contactsCount = contactsData?.data?.length ?? 0;
+  const categoriesCount = categoriesData?.data?.length ?? 0;
+
+  // بيانات الكروت
   const stats = [
     {
-      title: "الطلبات المكتملة",
-      value: ordersCompleted ?? "0",
-      icon: "fa fa-check-circle",
+      title: "عدد المشاريع",
+      value: projectsCount,
+      icon: "fa fa-briefcase",
       color: "bg-primary",
     },
     {
-      title: "الطلبات المعلقة",
-      value: ordersPending ?? "0",
-      icon: "fa fa-hourglass-half",
-      color: "bg-info",
-    },
-    {
-      title: "الطلبات الملغاة",
-      value: ordersCancle ?? "0",
-      icon: "fa fa-times-circle",
-      color: "bg-info",
-    },
-    {
-      title: "كوبونات المسوقين",
-      value: affiliateCoupons ?? "0",
-      icon: "fa fa-ticket",
+      title: "عدد العملاء",
+      value: contactsCount,
+      icon: "fa fa-user",
       color: "bg-success",
     },
     {
-      title: "عدد المستخدمين",
-      value: usersCount ?? "0",
-      icon: "fa fa-users",
+      title: "عدد الفئات",
+      value: categoriesCount,
+      icon: "fa fa-tags",
       color: "bg-warning",
-    },
-    {
-      title: "عدد المسوقين",
-      value: affiliatesCount ?? "0",
-      icon: "fa fa-users",
-      color: "bg-danger",
-    },
-    {
-      title: "مسوقين معلقين",
-      value: affiliatesPending ?? "0",
-      icon: "fa fa-hourglass-half",
-      color: "bg-secondary",
-    },
-    {
-      title: "مسوقين مرفوضين",
-      value: affiliatesRejected ?? "0",
-      icon: "fa fa-times-circle",
-      color: "bg-dark",
     },
   ];
 
@@ -82,7 +47,7 @@ const StatisticalCards = () => {
       }}
     >
       {stats.map((stat, idx) => (
-        <div className="col-md-3 mb-4" key={idx}>
+        <div className="col-md-4 mb-4" key={idx}>
           <div className="card border-0 shadow">
             <div className="card-body text-center">
               <div
