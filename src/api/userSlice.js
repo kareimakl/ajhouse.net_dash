@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 // Define your base URL
-const baseUrl = "https://api-gateway.camion-app.com"; // Replace with your actual base URL
+const baseUrl = "http://localhost:4000/api/v1"; // Replace with your actual base URL
 
 // Function to create request
 const createRequest = (url) => ({ url });
@@ -28,7 +28,7 @@ export const apiService = createApi({
     // Example login request (modify this as per your API endpoint)
     loginUser: builder.mutation({
       query: (userCredentials) => ({
-        url: "/users/auth/login_admin",
+        url: "/auth/login",
         method: "POST",
         body: userCredentials, // Sending user credentials (email and password)
       }),

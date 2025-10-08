@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const baseUrl = "https://api-gateway.camion-app.com";
+const baseUrl = "http://localhost:4000/api/v1";
 
 export const faqApi = createApi({
   reducerPath: "faqApi",
@@ -24,7 +24,7 @@ export const faqApi = createApi({
     // Create a new faq (POST)
     createFaq: builder.mutation({
       query: (newFaq) => ({
-        url: "/admin/settings/upload-logo",
+        url: "/auth/login",
         method: "POST",
         body: newFaq,
       }),
